@@ -1,0 +1,475 @@
+/* Premium Custom Styles for Phoenix Electronics */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+
+* {
+    font-family: 'Inter', sans-serif;
+}
+
+/* Smooth Scroll */
+html {
+    scroll-behavior: smooth;
+}
+
+/* Custom Scrollbar - Premium */
+::-webkit-scrollbar {
+    width: 10px;
+}
+
+::-webkit-scrollbar-track {
+    background: #0f172a;
+}
+
+::-webkit-scrollbar-thumb {
+    background: linear-gradient(to bottom, #f97316, #ea580c);
+    border-radius: 5px;
+    border: 2px solid #0f172a;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(to bottom, #fb923c, #f97316);
+}
+
+/* Premium Product Card Effects */
+.product-card {
+    transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.product-card:hover {
+    transform: translateY(-12px) scale(1.02);
+}
+
+.product-card .product-image {
+    transition: all 0.7s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.product-card:hover .product-image {
+    transform: scale(1.08);
+}
+
+/* Filter Button Active State - Premium */
+.filter-btn {
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.filter-btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+    transition: left 0.5s;
+}
+
+.filter-btn:hover::before {
+    left: 100%;
+}
+
+.filter-btn.active {
+    background: linear-gradient(135deg, #f97316 0%, #ea580c 100%);
+    color: white;
+    box-shadow: 0 10px 25px -5px rgba(249, 115, 22, 0.4);
+    transform: scale(1.05);
+}
+
+/* Cart Sidebar Animation - Smooth */
+#cartContent {
+    transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+#cartContent.open {
+    transform: translateX(0);
+}
+
+/* Hero Gradient Animation - Premium */
+@keyframes gradient-shift {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+.hero-gradient {
+    background-size: 400% 400%;
+    animation: gradient-shift 15s ease infinite;
+}
+
+/* Slow Zoom Animation */
+@keyframes slow-zoom {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.1); }
+    100% { transform: scale(1); }
+}
+
+.animate-slow-zoom {
+    animation: slow-zoom 20s ease-in-out infinite;
+}
+
+/* Fade In Up Animation */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Pulse Animation for Hot Badge - Enhanced */
+@keyframes pulse-glow {
+    0%, 100% { 
+        transform: scale(1); 
+        box-shadow: 0 0 0 0 rgba(249, 115, 22, 0.4);
+    }
+    50% { 
+        transform: scale(1.05); 
+        box-shadow: 0 0 20px 5px rgba(249, 115, 22, 0.2);
+    }
+}
+
+.hot-badge {
+    animation: pulse-glow 2s infinite;
+}
+
+/* Premium Loading Skeleton */
+.skeleton {
+    background: linear-gradient(90deg, #f1f5f9 25%, #e2e8f0 50%, #f1f5f9 75%);
+    background-size: 200% 100%;
+    animation: shimmer 1.5s infinite;
+}
+
+@keyframes shimmer {
+    0% { background-position: 200% 0; }
+    100% { background-position: -200% 0; }
+}
+
+/* Glassmorphism Effect - Enhanced */
+.glass-premium {
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Button Premium Effects */
+.btn-premium {
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s ease;
+}
+
+.btn-premium::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.3);
+    transform: translate(-50%, -50%);
+    transition: width 0.6s, height 0.6s;
+}
+
+.btn-premium:active::after {
+    width: 300px;
+    height: 300px;
+}
+
+/* Toast Animation - Premium */
+#toast.show {
+    transform: translateY(0);
+    opacity: 1;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+}
+
+/* Mobile Menu Animation */
+#mobileMenu {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    max-height: 0;
+    overflow: hidden;
+}
+
+#mobileMenu.open {
+    max-height: 400px;
+}
+
+/* Price Tag Styles - Premium */
+.price-tag {
+    position: relative;
+    display: inline-block;
+}
+
+.price-tag::before {
+    content: '';
+    position: absolute;
+    top: -4px;
+    right: -8px;
+    width: 8px;
+    height: 8px;
+    background: linear-gradient(135deg, #ef4444, #dc2626);
+    border-radius: 50%;
+    animation: pulse 2s infinite;
+}
+
+/* Image Container - Premium Aspect Ratio */
+.img-container-premium {
+    position: relative;
+    overflow: hidden;
+    border-radius: 24px;
+}
+
+.img-container-premium::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top, rgba(0,0,0,0.4) 0%, transparent 50%);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.img-container-premium:hover::after {
+    opacity: 1;
+}
+
+/* Custom Selection Color - Premium */
+::selection {
+    background: linear-gradient(135deg, #f97316, #ea580c);
+    color: white;
+}
+
+/* Focus Visible for Accessibility */
+*:focus-visible {
+    outline: 2px solid #f97316;
+    outline-offset: 2px;
+}
+
+/* Floating Animation */
+@keyframes float {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-20px); }
+}
+
+.animate-float {
+    animation: float 6s ease-in-out infinite;
+}
+
+/* Shine Effect on Hover */
+.shine-effect {
+    position: relative;
+    overflow: hidden;
+}
+
+.shine-effect::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 50%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+    transform: skewX(-25deg);
+    transition: left 0.75s;
+}
+
+.shine-effect:hover::before {
+    left: 150%;
+}
+
+/* Gradient Text */
+.gradient-text {
+    background: linear-gradient(135deg, #f97316 0%, #ea580c 50%, #dc2626 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+/* Neumorphism Cards */
+.neumorph {
+    background: #f8fafc;
+    box-shadow: 
+        20px 20px 60px #e2e8f0,
+        -20px -20px 60px #ffffff;
+    border-radius: 24px;
+}
+
+/* Dark Mode Glass */
+.glass-dark {
+    background: rgba(15, 23, 42, 0.7);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Filter Button Active State */
+.filter-btn.active {
+    background-color: #f97316;
+    color: white;
+    box-shadow: 0 4px 6px -1px rgba(249, 115, 22, 0.3);
+}
+
+/* Cart Sidebar Animation */
+#cartContent {
+    transition: transform 0.3s ease-in-out;
+}
+
+#cartContent.open {
+    transform: translateX(0);
+}
+
+/* Hero Gradient Animation */
+@keyframes gradient {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+.hero-gradient {
+    background-size: 200% 200%;
+    animation: gradient 15s ease infinite;
+}
+
+/* Pulse Animation for Hot Badge */
+@keyframes pulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+}
+
+.hot-badge {
+    animation: pulse 2s infinite;
+}
+
+/* Loading Skeleton */
+.skeleton {
+    background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+    background-size: 200% 100%;
+    animation: loading 1.5s infinite;
+}
+
+@keyframes loading {
+    0% { background-position: 200% 0; }
+    100% { background-position: -200% 0; }
+}
+
+/* Custom Input Focus */
+input:focus {
+    outline: none;
+}
+
+/* Button Ripple Effect */
+.btn-ripple {
+    position: relative;
+    overflow: hidden;
+}
+
+.btn-ripple::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.3);
+    transform: translate(-50%, -50%);
+    transition: width 0.6s, height 0.6s;
+}
+
+.btn-ripple:active::after {
+    width: 300px;
+    height: 300px;
+}
+
+/* Toast Animation */
+#toast.show {
+    transform: translateY(0);
+    opacity: 1;
+}
+
+/* Mobile Menu Animation */
+#mobileMenu {
+    transition: all 0.3s ease;
+    max-height: 0;
+    overflow: hidden;
+}
+
+#mobileMenu.open {
+    max-height: 400px;
+}
+
+/* Price Tag Styles */
+.price-tag {
+    position: relative;
+    display: inline-block;
+}
+
+.price-tag::before {
+    content: '';
+    position: absolute;
+    top: -4px;
+    right: -8px;
+    width: 8px;
+    height: 8px;
+    background: #ef4444;
+    border-radius: 50%;
+}
+
+/* Image Container Aspect Ratio */
+.img-container {
+    position: relative;
+    overflow: hidden;
+    padding-top: 100%; /* 1:1 Aspect Ratio */
+}
+
+.img-container img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* Custom Selection Color */
+::selection {
+    background: #f97316;
+    color: white;
+}
+
+/* Focus Visible for Accessibility */
+*:focus-visible {
+    outline: 2px solid #f97316;
+    outline-offset: 2px;
+}
+
+/* Glassmorphism Effect */
+.glass {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+/* Counter Animation */
+@property --num {
+    syntax: '<integer>';
+    initial-value: 0;
+    inherits: false;
+}
+
+.counter {
+    animation: counter 2s forwards;
+    counter-reset: num var(--num);
+}
+
+.counter::after {
+    content: counter(num);
+}
+
+@keyframes counter {
+    from { --num: 0; }
+    to { --num: 100; }
+}

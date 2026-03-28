@@ -1,0 +1,570 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - PHOENIX ELECTRONICS</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .sidebar {
+            transition: all 0.3s ease;
+        }
+        .sidebar.collapsed {
+            width: 80px;
+        }
+        .sidebar.collapsed .nav-text {
+            display: none;
+        }
+        .content {
+            transition: all 0.3s ease;
+        }
+        .content.expanded {
+            margin-left: 80px;
+        }
+        .content.full {
+            margin-left: 260px;
+        }
+        .stat-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-radius: 16px;
+            transition: all 0.3s ease;
+        }
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(102, 126, 234, 0.3);
+        }
+        .stat-card.sales {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+        }
+        .stat-card.revenue {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+        }
+        .stat-card.customers {
+            background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+        }
+        .stat-card.products {
+            background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
+        }
+        .table-row:hover {
+            background: linear-gradient(90deg, rgba(249, 115, 22, 0.05), transparent);
+        }
+    </style>
+</head>
+<body class="font-['Inter'] bg-gray-50">
+    <!-- Admin Dashboard -->
+    <div class="flex min-h-screen">
+        <!-- Sidebar -->
+        <div class="sidebar bg-gray-900 text-white w-64 fixed h-full overflow-y-auto z-50 shadow-xl" id="sidebar">
+            <div class="p-6">
+                <div class="flex items-center justify-between mb-8">
+                    <div class="flex items-center space-x-3">
+                        <i data-lucide="shield" class="w-8 h-8 text-orange-500"></i>
+                        <div>
+                            <h1 class="text-xl font-bold">PHOENIX<span class="text-orange-500">ADMIN</span></h1>
+                            <p class="text-xs text-gray-400">Control Panel</p>
+                        </div>
+                    </div>
+                    <button onclick="toggleSidebar()" class="p-2 hover:bg-gray-800 rounded-lg">
+                        <i data-lucide="chevron-left" class="w-5 h-5" id="sidebarToggleIcon"></i>
+                    </button>
+                </div>
+
+                <div class="space-y-1">
+                    <a href="#dashboard" onclick="showSection('dashboard')" class="nav-item flex items-center space-x-3 px-4 py-3 rounded-lg bg-orange-600 text-white">
+                        <i data-lucide="layout-dashboard" class="w-5 h-5"></i>
+                        <span class="nav-text font-medium">Dashboard</span>
+                    </a>
+                    <a href="#orders" onclick="showSection('orders')" class="nav-item flex items-center space-x-3 px-4 py-3 rounded-lg hover:bg-gray-800 transition-colors">
+                        <i data-lucide="shopping-bag" class="w-5 h-5"></i>
+                        <span class="nav-text">Đơn hàng</span>
+                    </a>
+                    <a href="#products" onclick="showSection('products')" class="nav-item flex items-center space-x-3 px-4 py-3 rounded-lg hover:bg-gray-800 transition-colors">
+                        <i data-lucide="package" class="w-5 h-5"></i>
+                        <span class="nav-text">Sản phẩm</span>
+                    </a>
+                    <a href="#inventory" onclick="showSection('inventory')" class="nav-item flex items-center space-x-3 px-4 py-3 rounded-lg hover:bg-gray-800 transition-colors">
+                        <i data-lucide="warehouse" class="w-5 h-5"></i>
+                        <span class="nav-text">Kho hàng</span>
+                    </a>
+                    <a href="#analytics" onclick="showSection('analytics')" class="nav-item flex items-center space-x-3 px-4 py-3 rounded-lg hover:bg-gray-800 transition-colors">
+                        <i data-lucide="bar-chart-3" class="w-5 h-5"></i>
+                        <span class="nav-text">Thống kê</span>
+                    </a>
+                    <a href="#customers" onclick="showSection('customers')" class="nav-item flex items-center space-x-3 px-4 py-3 rounded-lg hover:bg-gray-800 transition-colors">
+                        <i data-lucide="users" class="w-5 h-5"></i>
+                        <span class="nav-text">Khách hàng</span>
+                    </a>
+                </div>
+
+                <div class="mt-12 pt-6 border-t border-gray-800">
+                    <div class="flex items-center space-x-3 px-4 py-3">
+                        <div class="w-10 h-10 bg-orange-100 rounded-full flex items-center justify-center">
+                            <i data-lucide="user" class="w-5 h-5 text-orange-600"></i>
+                        </div>
+                        <div>
+                            <p class="font-medium">Admin User</p>
+                            <p class="text-xs text-gray-400">Quản trị viên</p>
+                        </div>
+                    </div>
+                    <div class="mt-4">
+                        <a href="index.html" class="flex items-center space-x-3 px-4 py-3 rounded-lg hover:bg-gray-800 transition-colors">
+                            <i data-lucide="globe" class="w-5 h-5"></i>
+                            <span class="nav-text">Xem website</span>
+                        </a>
+                        <button onclick="logout()" class="w-full flex items-center space-x-3 px-4 py-3 rounded-lg hover:bg-gray-800 transition-colors text-red-400">
+                            <i data-lucide="log-out" class="w-5 h-5"></i>
+                            <span class="nav-text">Đăng xuất</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="content full w-full ml-64 p-8" id="mainContent">
+            <!-- Top Bar -->
+            <div class="flex items-center justify-between mb-8">
+                <div>
+                    <h1 class="text-2xl font-bold text-gray-900" id="sectionTitle">Dashboard</h1>
+                    <p class="text-gray-600">Tổng quan về hoạt động bán hàng</p>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <div class="relative">
+                        <i data-lucide="bell" class="w-5 h-5 text-gray-600"></i>
+                        <span class="absolute -top-1 -right-1 w-2 h-2 bg-red-500 rounded-full"></span>
+                    </div>
+                    <div class="bg-white px-4 py-2 rounded-xl shadow-sm">
+                        <span class="text-gray-600">Hôm nay: </span>
+                        <span id="currentDate" class="font-bold">28/12/2024</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Dashboard Section -->
+            <section id="dashboardSection" class="section">
+                <!-- Stats Cards -->
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+                    <div class="stat-card sales p-6">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <p class="text-sm opacity-90">Tổng doanh thu</p>
+                                <p class="text-3xl font-bold mt-2">248.5M</p>
+                                <p class="text-sm mt-1">+12.5% so với tháng trước</p>
+                            </div>
+                            <i data-lucide="dollar-sign" class="w-10 h-10 opacity-80"></i>
+                        </div>
+                    </div>
+                    <div class="stat-card revenue p-6">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <p class="text-sm opacity-90">Đơn hàng</p>
+                                <p class="text-3xl font-bold mt-2">1,248</p>
+                                <p class="text-sm mt-1">+24 đơn hôm nay</p>
+                            </div>
+                            <i data-lucide="shopping-cart" class="w-10 h-10 opacity-80"></i>
+                        </div>
+                    </div>
+                    <div class="stat-card customers p-6">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <p class="text-sm opacity-90">Khách hàng</p>
+                                <p class="text-3xl font-bold mt-2">856</p>
+                                <p class="text-sm mt-1">+12 khách mới</p>
+                            </div>
+                            <i data-lucide="users" class="w-10 h-10 opacity-80"></i>
+                        </div>
+                    </div>
+                    <div class="stat-card products p-6">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <p class="text-sm opacity-90">Sản phẩm tồn</p>
+                                <p class="text-3xl font-bold mt-2">2,845</p>
+                                <p class="text-sm mt-1">15 sản phẩm sắp hết</p>
+                            </div>
+                            <i data-lucide="package" class="w-10 h-10 opacity-80"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Charts & Recent Orders -->
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                    <!-- Revenue Chart -->
+                    <div class="lg:col-span-2 bg-white rounded-2xl shadow-lg p-6">
+                        <div class="flex items-center justify-between mb-6">
+                            <h2 class="text-xl font-bold text-gray-900">Doanh thu theo tháng</h2>
+                            <select class="bg-gray-50 border border-gray-200 rounded-lg px-4 py-2 text-sm">
+                                <option>12 tháng gần nhất</option>
+                                <option>6 tháng gần nhất</option>
+                                <option>30 ngày gần nhất</option>
+                            </select>
+                        </div>
+                        <canvas id="revenueChart" height="300"></canvas>
+                    </div>
+
+                    <!-- Top Products -->
+                    <div class="bg-white rounded-2xl shadow-lg p-6">
+                        <h2 class="text-xl font-bold text-gray-900 mb-6">Sản phẩm bán chạy</h2>
+                        <div class="space-y-4">
+                            <div class="flex items-center justify-between p-3 hover:bg-gray-50 rounded-lg">
+                                <div class="flex items-center space-x-3">
+                                    <img src="https://images.unsplash.com/photo-1696446702183-cbd13d78e1e7?w=100&h=100&fit=crop" class="w-12 h-12 rounded-lg object-cover">
+                                    <div>
+                                        <p class="font-medium">iPhone 15 Pro Max</p>
+                                        <p class="text-sm text-gray-500">Apple</p>
+                                    </div>
+                                </div>
+                                <div class="text-right">
+                                    <p class="font-bold">128</p>
+                                    <p class="text-sm text-green-600">+15%</p>
+                                </div>
+                            </div>
+                            <div class="flex items-center justify-between p-3 hover:bg-gray-50 rounded-lg">
+                                <div class="flex items-center space-x-3">
+                                    <img src="https://images.unsplash.com/photo-1610945265078-3858a0828671?w=100&h=100&fit=crop" class="w-12 h-12 rounded-lg object-cover">
+                                    <div>
+                                        <p class="font-medium">Galaxy S24 Ultra</p>
+                                        <p class="text-sm text-gray-500">Samsung</p>
+                                    </div>
+                                </div>
+                                <div class="text-right">
+                                    <p class="font-bold">89</p>
+                                    <p class="text-sm text-green-600">+22%</p>
+                                </div>
+                            </div>
+                            <div class="flex items-center justify-between p-3 hover:bg-gray-50 rounded-lg">
+                                <div class="flex items-center space-x-3">
+                                    <img src="https://images.unsplash.com/photo-1598327775669-3116a627fd22?w=100&h=100&fit=crop" class="w-12 h-12 rounded-lg object-cover">
+                                    <div>
+                                        <p class="font-medium">Xiaomi 14 Ultra</p>
+                                        <p class="text-sm text-gray-500">Xiaomi</p>
+                                    </div>
+                                </div>
+                                <div class="text-right">
+                                    <p class="font-bold">74</p>
+                                    <p class="text-sm text-orange-600">+8%</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Recent Orders -->
+                <div class="mt-8 bg-white rounded-2xl shadow-lg overflow-hidden">
+                    <div class="p-6 border-b">
+                        <h2 class="text-xl font-bold text-gray-900">Đơn hàng gần đây</h2>
+                    </div>
+                    <div class="overflow-x-auto">
+                        <table class="w-full">
+                            <thead class="bg-gray-50">
+                                <tr>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">ID</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Khách hàng</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Sản phẩm</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Tổng tiền</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Trạng thái</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-gray-200" id="recentOrders">
+                                <!-- Orders will be loaded here -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Orders Section -->
+            <section id="ordersSection" class="section hidden">
+                <div class="bg-white rounded-2xl shadow-lg overflow-hidden">
+                    <div class="p-6 border-b flex justify-between items-center">
+                        <h2 class="text-xl font-bold text-gray-900">Quản lý đơn hàng</h2>
+                        <div class="flex space-x-4">
+                            <div class="relative">
+                                <input type="text" placeholder="Tìm kiếm đơn hàng..." class="bg-gray-50 border border-gray-200 rounded-lg px-4 py-2 pl-10 text-sm w-64">
+                                <i data-lucide="search" class="w-4 h-4 absolute left-3 top-3 text-gray-400"></i>
+                            </div>
+                            <select class="bg-gray-50 border border-gray-200 rounded-lg px-4 py-2 text-sm">
+                                <option>Tất cả trạng thái</option>
+                                <option>Chờ xác nhận</option>
+                                <option>Đang giao</option>
+                                <option>Hoàn thành</option>
+                                <option>Đã hủy</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="overflow-x-auto">
+                        <table class="w-full">
+                            <thead class="bg-gray-50">
+                                <tr>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Mã đơn</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Ngày đặt</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Khách hàng</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Sản phẩm</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Số lượng</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Tổng tiền</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Trạng thái</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Thao tác</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-gray-200" id="ordersTable">
+                                <!-- Orders will be loaded here -->
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="p-6 border-t flex justify-between items-center">
+                        <div class="text-sm text-gray-600">Hiển thị 10 trong tổng số 1,248 đơn hàng</div>
+                        <div class="flex space-x-2">
+                            <button class="px-3 py-1 bg-gray-100 rounded-lg text-gray-700"><</button>
+                            <button class="px-3 py-1 bg-orange-500 text-white rounded-lg">1</button>
+                            <button class="px-3 py-1 bg-gray-100 rounded-lg text-gray-700">2</button>
+                            <button class="px-3 py-1 bg-gray-100 rounded-lg text-gray-700">></button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Products Section -->
+            <section id="productsSection" class="section hidden">
+                <div class="mb-6 flex justify-between items-center">
+                    <h2 class="text-2xl font-bold text-gray-900">Quản lý sản phẩm</h2>
+                    <button onclick="addNewProduct()" class="bg-orange-500 hover:bg-orange-600 text-white px-6 py-3 rounded-lg font-medium flex items-center space-x-2">
+                        <i data-lucide="plus" class="w-5 h-5"></i>
+                        <span>Thêm sản phẩm mới</span>
+                    </button>
+                </div>
+                
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                    <!-- Product List -->
+                    <div class="lg:col-span-2 bg-white rounded-2xl shadow-lg overflow-hidden">
+                        <div class="p-6 border-b">
+                            <div class="flex justify-between items-center">
+                                <h3 class="font-bold text-gray-900">Danh sách sản phẩm</h3>
+                                <div class="flex space-x-4">
+                                    <div class="relative">
+                                        <input type="text" placeholder="Tìm sản phẩm..." class="bg-gray-50 border border-gray-200 rounded-lg px-4 py-2 pl-10 text-sm w-64">
+                                        <i data-lucide="search" class="w-4 h-4 absolute left-3 top-3 text-gray-400"></i>
+                                    </div>
+                                    <select class="bg-gray-50 border border-gray-200 rounded-lg px-4 py-2 text-sm">
+                                        <option>Tất cả danh mục</option>
+                                        <option>iPhone</option>
+                                        <option>Samsung</option>
+                                        <option>Xiaomi</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="overflow-x-auto">
+                            <table class="w-full">
+                                <thead class="bg-gray-50">
+                                    <tr>
+                                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Sản phẩm</th>
+                                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Giá</th>
+                                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Tồn kho</th>
+                                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Đã bán</th>
+                                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Trạng thái</th>
+                                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Thao tác</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="divide-y divide-gray-200" id="productsTable">
+                                    <!-- Products will be loaded here -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- Quick Stats -->
+                    <div class="space-y-6">
+                        <div class="bg-white rounded-2xl shadow-lg p-6">
+                            <h3 class="font-bold text-gray-900 mb-4">Thống kê tồn kho</h3>
+                            <div class="space-y-4">
+                                <div>
+                                    <div class="flex justify-between mb-1">
+                                        <span class="text-sm text-gray-600">iPhone</span>
+                                        <span class="text-sm font-bold">45/50</span>
+                                    </div>
+                                    <div class="w-full bg-gray-200 rounded-full h-2">
+                                        <div class="bg-green-500 h-2 rounded-full" style="width: 90%"></div>
+                                    </div>
+                                </div>
+                                <div>
+                                    <div class="flex justify-between mb-1">
+                                        <span class="text-sm text-gray-600">Samsung</span>
+                                        <span class="text-sm font-bold">28/35</span>
+                                    </div>
+                                    <div class="w-full bg-gray-200 rounded-full h-2">
+                                        <div class="bg-blue-500 h-2 rounded-full" style="width: 80%"></div>
+                                    </div>
+                                </div>
+                                <div>
+                                    <div class="flex justify-between mb-1">
+                                        <span class="text-sm text-gray-600">Xiaomi</span>
+                                        <span class="text-sm font-bold">15/25</span>
+                                    </div>
+                                    <div class="w-full bg-gray-200 rounded-full h-2">
+                                        <div class="bg-orange-500 h-2 rounded-full" style="width: 60%"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="bg-white rounded-2xl shadow-lg p-6">
+                            <h3 class="font-bold text-gray-900 mb-4">Sản phẩm sắp hết</h3>
+                            <div class="space-y-3">
+                                <div class="flex items-center justify-between p-2 hover:bg-gray-50 rounded-lg">
+                                    <div class="flex items-center space-x-3">
+                                        <div class="w-10 h-10 bg-gray-100 rounded-lg flex items-center justify-center">
+                                            <i data-lucide="smartphone" class="w-5 h-5 text-gray-600"></i>
+                                        </div>
+                                        <div>
+                                            <p class="font-medium text-sm">OPPO Reno11 Pro</p>
+                                            <p class="text-xs text-gray-500">Xám Đá</p>
+                                        </div>
+                                    </div>
+                                    <span class="text-red-500 font-bold">3</span>
+                                </div>
+                                <div class="flex items-center justify-between p-2 hover:bg-gray-50 rounded-lg">
+                                    <div class="flex items-center space-x-3">
+                                        <div class="w-10 h-10 bg-gray-100 rounded-lg flex items-center justify-center">
+                                            <i data-lucide="smartphone" class="w-5 h-5 text-gray-600"></i>
+                                        </div>
+                                        <div>
+                                            <p class="font-medium text-sm">Redmi Note 13</p>
+                                            <p class="text-xs text-gray-500">Tím Aurora</p>
+                                        </div>
+                                    </div>
+                                    <span class="text-red-500 font-bold">5</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Inventory Section -->
+            <section id="inventorySection" class="section hidden">
+                <div class="bg-white rounded-2xl shadow-lg p-6">
+                    <div class="flex justify-between items-center mb-6">
+                        <h2 class="text-xl font-bold text-gray-900">Quản lý kho hàng</h2>
+                        <button onclick="importInventory()" class="bg-green-500 hover:bg-green-600 text-white px-6 py-3 rounded-lg font-medium flex items-center space-x-2">
+                            <i data-lucide="download" class="w-5 h-5"></i>
+                            <span>Nhập hàng</span>
+                        </button>
+                    </div>
+                    
+                    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                        <!-- Inventory Table -->
+                        <div class="lg:col-span-2">
+                            <div class="overflow-x-auto">
+                                <table class="w-full">
+                                    <thead class="bg-gray-50">
+                                        <tr>
+                                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Mã SP</th>
+                                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Tên sản phẩm</th>
+                                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Tồn kho</th>
+                                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Đã bán</th>
+                                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Đang giao</th>
+                                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Tổng</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="divide-y divide-gray-200" id="inventoryTable">
+                                        <!-- Inventory items will be loaded here -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <!-- Inventory Actions -->
+                        <div class="space-y-6">
+                            <div class="bg-orange-50 border border-orange-200 rounded-2xl p-6">
+                                <h3 class="font-bold text-orange-800 mb-3">Nhập hàng nhanh</h3>
+                                <div class="space-y-4">
+                                    <div>
+                                        <label class="block text-sm text-gray-600 mb-1">Mã sản phẩm</label>
+                                        <input type="text" class="w-full border border-gray-300 rounded-lg px-4 py-2">
+                                    </div>
+                                    <div>
+                                        <label class="block text-sm text-gray-600 mb-1">Số lượng</label>
+                                        <input type="number" class="w-full border border-gray-300 rounded-lg px-4 py-2">
+                                    </div>
+                                    <button class="w-full bg-orange-500 hover:bg-orange-600 text-white py-3 rounded-lg font-medium">
+                                        Xác nhận nhập
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="bg-blue-50 border border-blue-200 rounded-2xl p-6">
+                                <h3 class="font-bold text-blue-800 mb-3">Thống kê kho</h3>
+                                <div class="space-y-3">
+                                    <div class="flex justify-between">
+                                        <span class="text-gray-600">Tổng giá trị tồn kho:</span>
+                                        <span class="font-bold">12.5 tỷ</span>
+                                    </div>
+                                    <div class="flex justify-between">
+                                        <span class="text-gray-600">Sản phẩm hết hàng:</span>
+                                        <span class="font-bold">2</span>
+                                    </div>
+                                    <div class="flex justify-between">
+                                        <span class="text-gray-600">Sắp hết hàng:</span>
+                                        <span class="font-bold">5</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="admin.js"></script>
+    <script>
+        lucide.createIcons();
+        
+        // Set current date
+        const now = new Date();
+        document.getElementById('currentDate').textContent = now.toLocaleDateString('vi-VN');
+        
+        // Initialize charts
+        const ctx = document.getElementById('revenueChart').getContext('2d');
+        const revenueChart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: ['Tháng 1', 'Tháng 2', 'Tháng 3', 'Tháng 4', 'Tháng 5', 'Tháng 6', 'Tháng 7', 'Tháng 8', 'Tháng 9', 'Tháng 10', 'Tháng 11', 'Tháng 12'],
+                datasets: [{
+                    label: 'Doanh thu (triệu VND)',
+                    data: [120, 135, 142, 156, 165, 178, 190, 205, 215, 230, 245, 248.5],
+                    borderColor: '#f97316',
+                    backgroundColor: 'rgba(249, 115, 22, 0.1)',
+                    borderWidth: 3,
+                    fill: true,
+                    tension: 0.4
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        display: false
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        grid: {
+                            color: 'rgba(0,0,0,0.05)'
+                        }
+                    },
+                    x: {
+                        grid: {
+                            color: 'rgba(0,0,0,0.05)'
+                        }
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>

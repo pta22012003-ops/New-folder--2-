@@ -1,0 +1,1259 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PHOENIX ELECTRONICS - Cửa hàng điện thoại chính hãng</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#DC2626',
+                        secondary: '#1F2937',
+                        accent: '#EF4444',
+                        dark: '#111827'
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'system-ui', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style type="text/tailwindcss">
+        @layer utilities {
+            .content-auto {
+                content-visibility: auto;
+            }
+            .card-hover {
+                @apply transition-all duration-300 hover:shadow-xl hover:-translate-y-2;
+            }
+            .btn-primary {
+                @apply bg-primary hover:bg-red-700 text-white px-6 py-3 rounded-lg transition-all duration-300 font-medium;
+            }
+            .btn-outline {
+                @apply border-2 border-primary text-primary hover:bg-primary hover:text-white px-6 py-3 rounded-lg transition-all duration-300 font-medium;
+            }
+        }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-800">
+    <!-- Header -->
+    <header id="header" class="fixed w-full z-50 bg-white shadow-md transition-all duration-300">
+        <div class="container mx-auto px-4">
+            <div class="flex items-center justify-between py-4">
+                <a href="#" onclick="showPage('home')" class="flex items-center space-x-2">
+                    <div class="h-10 w-10 bg-primary rounded-lg flex items-center justify-center text-white">
+                        <i class="fa fa-fire text-xl"></i>
+                    </div>
+                    <span class="text-2xl font-bold text-primary">PHOENIX</span>
+                    <span class="text-2xl font-light">ELECTRONICS</span>
+                </a>
+
+                <div class="hidden md:flex relative flex-1 max-w-xl mx-8">
+                    <input id="searchInput" type="text" placeholder="Tìm kiếm điện thoại..." class="w-full px-4 py-2.5 rounded-full border border-gray-300 focus:outline-none focus:border-primary" onkeyup="searchProduct()">
+                    <button class="absolute right-0 top-0 h-full px-4 text-primary">
+                        <i class="fa fa-search"></i>
+                    </button>
+                </div>
+
+                <div class="flex items-center space-x-6">
+                    <button onclick="toggleCart()" class="relative text-gray-700 hover:text-primary transition-colors">
+                        <i class="fa fa-shopping-cart text-xl"></i>
+                        <span id="cartCount" class="absolute -top-2 -right-2 bg-primary text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">0</span>
+                    </button>
+
+                    <div id="userMenu" class="relative">
+                        <button id="userBtn" onclick="toggleUserMenu()" class="flex items-center space-x-2 text-gray-700 hover:text-primary transition-colors">
+                            <i class="fa fa-user text-xl"></i>
+                            <span id="userName" class="hidden md:block">Tài khoản</span>
+                        </button>
+
+                        <div id="userDropdown" class="hidden absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-xl py-2 z-50">
+                            <div id="loggedOutMenu">
+                                <a href="#" onclick="showModal('loginModal')" class="block px-4 py-2 hover:bg-gray-100">Đăng nhập</a>
+                                <a href="#" onclick="showModal('registerModal')" class="block px-4 py-2 hover:bg-gray-100">Đăng ký</a>
+                            </div>
+                            <div id="loggedInMenu" class="hidden">
+                                <a href="#" onclick="showPage('orders')" class="block px-4 py-2 hover:bg-gray-100">Đơn hàng của tôi</a>
+                                <a href="#" onclick="showPage('admin')" id="adminLink" class="hidden block px-4 py-2 hover:bg-gray-100">Quản trị</a>
+                                <a href="#" onclick="logout()" class="block px-4 py-2 hover:bg-gray-100 text-red-600">Đăng xuất</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Navigation -->
+        <div class="bg-primary text-white">
+            <div class="container mx-auto px-4">
+                <nav class="flex items-center space-x-8 py-3 overflow-x-auto">
+                    <a href="#" onclick="filterByBrand('all')" class="whitespace-nowrap hover:text-yellow-200 transition-colors">Tất cả sản phẩm</a>
+                    <a href="#" onclick="filterByBrand('Apple')" class="whitespace-nowrap hover:text-yellow-200 transition-colors">iPhone</a>
+                    <a href="#" onclick="filterByBrand('Samsung')" class="whitespace-nowrap hover:text-yellow-200 transition-colors">Samsung</a>
+                    <a href="#" onclick="filterByBrand('Xiaomi')" class="whitespace-nowrap hover:text-yellow-200 transition-colors">Xiaomi</a>
+                    <a href="#" onclick="filterByBrand('Oppo')" class="whitespace-nowrap hover:text-yellow-200 transition-colors">Oppo</a>
+                    <a href="#" onclick="filterByBrand('Vivo')" class="whitespace-nowrap hover:text-yellow-200 transition-colors">Vivo</a>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <main class="pt-36">
+        <!-- Trang chủ -->
+        <div id="homePage" class="page">
+            <!-- Slider Banner -->
+            <div class="relative h-[500px] bg-gradient-to-r from-red-700 to-primary overflow-hidden">
+                <div class="container mx-auto px-4 h-full flex items-center">
+                    <div class="grid md:grid-cols-2 gap-8 items-center">
+                        <div class="text-white z-10">
+                            <h1 class="text-[clamp(2rem,5vw,4rem)] font-bold mb-4 animate-pulse">Mua điện thoại chính hãng</h1>
+                            <p class="text-xl mb-8 opacity-90">Giá tốt nhất thị trường, bảo hành chính hãng 2 năm, giao hàng toàn quốc</p>
+                            <div class="flex flex-wrap gap-4">
+                                <button onclick="scrollToProducts()" class="bg-white text-primary px-8 py-3 rounded-lg font-bold hover:bg-gray-100 transition-all transform hover:scale-105">
+                                    Mua ngay
+                                </button>
+                                <button class="border-2 border-white text-white px-8 py-3 rounded-lg font-bold hover:bg-white hover:text-primary transition-all">
+                                    Xem khuyến mãi
+                                </button>
+                            </div>
+                        </div>
+                        <div class="hidden md:block">
+                            <img src="https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=600" alt="Điện thoại" class="transform rotate-12 drop-shadow-2xl animate-bounce" style="animation-duration: 3s">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Bộ lọc -->
+            <div class="container mx-auto px-4 py-8">
+                <div class="bg-white rounded-xl shadow-md p-6 mb-8">
+                    <h3 class="text-lg font-bold mb-4">Lọc sản phẩm</h3>
+                    <div class="grid md:grid-cols-4 gap-4">
+                        <div>
+                            <label class="block text-sm text-gray-600 mb-1">Hãng sản xuất</label>
+                            <select id="filterBrand" onchange="applyFilters()" class="w-full p-2.5 rounded-lg border border-gray-300">
+                                <option value="">Tất cả hãng</option>
+                                <option value="Apple">Apple</option>
+                                <option value="Samsung">Samsung</option>
+                                <option value="Xiaomi">Xiaomi</option>
+                                <option value="Oppo">Oppo</option>
+                                <option value="Vivo">Vivo</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-sm text-gray-600 mb-1">Khoảng giá</label>
+                            <select id="filterPrice" onchange="applyFilters()" class="w-full p-2.5 rounded-lg border border-gray-300">
+                                <option value="">Tất cả mức giá</option>
+                                <option value="0-10000000">Dưới 10 triệu</option>
+                                <option value="10000000-20000000">10 triệu - 20 triệu</option>
+                                <option value="20000000-30000000">20 triệu - 30 triệu</option>
+                                <option value="30000000-">Trên 30 triệu</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-sm text-gray-600 mb-1">Bộ nhớ</label>
+                            <select id="filterMemory" onchange="applyFilters()" class="w-full p-2.5 rounded-lg border border-gray-300">
+                                <option value="">Tất cả dung lượng</option>
+                                <option value="128">128 GB</option>
+                                <option value="256">256 GB</option>
+                                <option value="512">512 GB</option>
+                                <option value="1024">1 TB</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-sm text-gray-600 mb-1">Sắp xếp</label>
+                            <select id="filterSort" onchange="applyFilters()" class="w-full p-2.5 rounded-lg border border-gray-300">
+                                <option value="">Mặc định</option>
+                                <option value="price_asc">Giá tăng dần</option>
+                                <option value="price_desc">Giá giảm dần</option>
+                                <option value="newest">Mới nhất</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Danh sách sản phẩm -->
+                <h2 class="text-2xl font-bold mb-6" id="productsSection">Điện thoại mới nhất</h2>
+                <div id="productsList" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 mb-12">
+                    
+                </div>
+            </div>
+        </div>
+
+        <!-- Trang chi tiết sản phẩm -->
+        <div id="productPage" class="page hidden">
+            <div class="container mx-auto px-4 py-8">
+                <button onclick="showPage('home')" class="mb-6 text-primary hover:underline">
+                    <i class="fa fa-arrow-left mr-2"></i> Quay lại danh sách sản phẩm
+                </button>
+                
+                <div id="productDetail" class="bg-white rounded-xl shadow-lg overflow-hidden">
+                    
+                </div>
+            </div>
+        </div>
+
+        <!-- Trang giỏ hàng -->
+        <div id="cartPage" class="page hidden">
+            <div class="container mx-auto px-4 py-8">
+                <h2 class="text-2xl font-bold mb-6">Giỏ hàng của bạn</h2>
+                
+                <div id="cartContent">
+                    
+                </div>
+            </div>
+        </div>
+
+        <!-- Trang thanh toán -->
+        <div id="checkoutPage" class="page hidden">
+            <div class="container mx-auto px-4 py-8">
+                <h2 class="text-2xl font-bold mb-6">Thanh toán</h2>
+                
+                <div class="grid md:grid-cols-2 gap-8">
+                    <div class="bg-white rounded-xl shadow-md p-6">
+                        <h3 class="text-lg font-bold mb-4">Thông tin giao hàng</h3>
+                        <form id="checkoutForm" onsubmit="processCheckout(event)">
+                            <div class="space-y-4">
+                                <div>
+                                    <label class="block text-sm text-gray-600 mb-1">Họ và tên</label>
+                                    <input type="text" required class="w-full p-3 rounded-lg border border-gray-300">
+                                </div>
+                                <div>
+                                    <label class="block text-sm text-gray-600 mb-1">Số điện thoại</label>
+                                    <input type="tel" required class="w-full p-3 rounded-lg border border-gray-300">
+                                </div>
+                                <div>
+                                    <label class="block text-sm text-gray-600 mb-1">Địa chỉ nhận hàng</label>
+                                    <textarea rows="3" required class="w-full p-3 rounded-lg border border-gray-300"></textarea>
+                                </div>
+                                <div>
+                                    <label class="block text-sm text-gray-600 mb-1">Phương thức thanh toán</label>
+                                    <div class="space-y-2">
+                                        <label class="flex items-center p-3 border rounded-lg cursor-pointer hover:bg-gray-50">
+                                            <input type="radio" name="payment" value="cod" checked class="mr-3">
+                                            <span>Thanh toán khi nhận hàng (COD)</span>
+                                        </label>
+                                        <label class="flex items-center p-3 border rounded-lg cursor-pointer hover:bg-gray-50">
+                                            <input type="radio" name="payment" value="bank" class="mr-3">
+                                            <span>Chuyển khoản ngân hàng</span>
+                                        </label>
+                                    </div>
+                                </div>
+
+                                <button type="submit" class="btn-primary w-full text-lg py-4">
+                                    Xác nhận đặt hàng
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+
+                    <div>
+                        <div class="bg-white rounded-xl shadow-md p-6 sticky top-40">
+                            <h3 class="text-lg font-bold mb-4">Đơn hàng của bạn</h3>
+                            <div id="checkoutItems" class="space-y-3 mb-6">
+
+                            </div>
+                            <div class="border-t pt-4">
+                                <div class="flex justify-between mb-2">
+                                    <span>Tạm tính</span>
+                                    <span id="checkoutSubtotal">0₫</span>
+                                </div>
+                                <div class="flex justify-between mb-2">
+                                    <span>Phí vận chuyển</span>
+                                    <span>30.000₫</span>
+                                </div>
+                                <div class="flex justify-between font-bold text-lg">
+                                    <span>Tổng cộng</span>
+                                    <span id="checkoutTotal" class="text-primary">0₫</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Trang đơn hàng -->
+        <div id="ordersPage" class="page hidden">
+            <div class="container mx-auto px-4 py-8">
+                <h2 class="text-2xl font-bold mb-6">Đơn hàng của tôi</h2>
+                
+                <div id="ordersList" class="space-y-4">
+
+                </div>
+            </div>
+        </div>
+
+        <!-- Trang cảm ơn -->
+        <div id="thankyouPage" class="page hidden">
+            <div class="container mx-auto px-4 py-20 text-center">
+                <div class="bg-white rounded-xl shadow-md max-w-md mx-auto p-8">
+                    <div class="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-6">
+                        <i class="fa fa-check text-green-500 text-3xl"></i>
+                    </div>
+                    <h2 class="text-2xl font-bold mb-4">Đặt hàng thành công!</h2>
+                    <p class="text-gray-600 mb-6">Cảm ơn bạn đã mua hàng tại PHOENIX ELECTRONICS. Chúng tôi sẽ liên hệ với bạn sớm nhất để xác nhận đơn hàng.</p>
+                    <button onclick="showPage('home')" class="btn-primary">Tiếp tục mua sắm</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Trang quản trị Admin -->
+        <div id="adminPage" class="page hidden">
+            <div class="flex">
+                <!-- Sidebar Admin -->
+                <div class="w-64 bg-dark min-h-screen text-white fixed left-0 top-32 pt-4">
+                    <div class="px-4 py-2 border-b border-gray-700">
+                        <h3 class="font-bold text-lg">Quản trị hệ thống</h3>
+                    </div>
+                    <nav class="p-4 space-y-2">
+                        <a href="#" onclick="showAdminTab('dashboard')" class="admin-tab block px-4 py-2 rounded-lg hover:bg-primary transition-colors bg-primary">
+                            <i class="fa fa-dashboard mr-2"></i> Tổng quan
+                        </a>
+                        <a href="#" onclick="showAdminTab('products')" class="admin-tab block px-4 py-2 rounded-lg hover:bg-primary transition-colors">
+                            <i class="fa fa-mobile mr-2"></i> Quản lý sản phẩm
+                        </a>
+                        <a href="#" onclick="showAdminTab('orders')" class="admin-tab block px-4 py-2 rounded-lg hover:bg-primary transition-colors">
+                            <i class="fa fa-shopping-bag mr-2"></i> Quản lý đơn hàng
+                        </a>
+                        <a href="#" onclick="showAdminTab('users')" class="admin-tab block px-4 py-2 rounded-lg hover:bg-primary transition-colors">
+                            <i class="fa fa-users mr-2"></i> Quản lý người dùng
+                        </a>
+                    </nav>
+
+                    <div class="absolute bottom-4 left-0 w-full px-4">
+                        <a href="#" onclick="showPage('home')" class="block w-full text-center py-2 border border-gray-600 rounded-lg hover:bg-gray-800">
+                            <i class="fa fa-arrow-left mr-2"></i> Về trang chủ
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Nội dung Admin -->
+                <div class="ml-64 flex-1 p-8">
+                    <!-- Dashboard -->
+                    <div id="adminDashboard" class="admin-content">
+                        <h2 class="text-2xl font-bold mb-6">Tổng quan hệ thống</h2>
+                        
+                        <div class="grid md:grid-cols-4 gap-6 mb-8">
+                            <div class="bg-white rounded-xl shadow-md p-6">
+                                <div class="flex items-center justify-between">
+                                    <div>
+                                        <p class="text-gray-500 text-sm">Tổng đơn hàng</p>
+                                        <h3 class="text-3xl font-bold">124</h3>
+                                        <p class="text-green-500 text-sm">+12% so với tháng trước</p>
+                                    </div>
+                                    <div class="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center text-blue-600">
+                                        <i class="fa fa-shopping-cart text-xl"></i>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="bg-white rounded-xl shadow-md p-6">
+                                <div class="flex items-center justify-between">
+                                    <div>
+                                        <p class="text-gray-500 text-sm">Tổng doanh thu</p>
+                                        <h3 class="text-3xl font-bold">328M</h3>
+                                        <p class="text-green-500 text-sm">+18% so với tháng trước</p>
+                                    </div>
+                                    <div class="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center text-green-600">
+                                        <i class="fa fa-money text-xl"></i>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="bg-white rounded-xl shadow-md p-6">
+                                <div class="flex items-center justify-between">
+                                    <div>
+                                        <p class="text-gray-500 text-sm">Sản phẩm</p>
+                                        <h3 class="text-3xl font-bold">42</h3>
+                                    </div>
+                                    <div class="w-12 h-12 bg-orange-100 rounded-full flex items-center justify-center text-orange-600">
+                                        <i class="fa fa-mobile text-xl"></i>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="bg-white rounded-xl shadow-md p-6">
+                                <div class="flex items-center justify-between">
+                                    <div>
+                                        <p class="text-gray-500 text-sm">Người dùng</p>
+                                        <h3 class="text-3xl font-bold">256</h3>
+                                    </div>
+                                    <div class="w-12 h-12 bg-purple-100 rounded-full flex items-center justify-center text-purple-600">
+                                        <i class="fa fa-users text-xl"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="bg-white rounded-xl shadow-md p-6">
+                            <h3 class="text-lg font-bold mb-4">Biểu đồ doanh thu 7 ngày gần nhất</h3>
+                            <canvas id="revenueChart" height="100"></canvas>
+                        </div>
+                    </div>
+
+                    <!-- Quản lý sản phẩm -->
+                    <div id="adminProducts" class="admin-content hidden">
+                        <div class="flex justify-between items-center mb-6">
+                            <h2 class="text-2xl font-bold">Quản lý sản phẩm</h2>
+                            <button onclick="showModal('addProductModal')" class="btn-primary">
+                                <i class="fa fa-plus mr-2"></i> Thêm sản phẩm mới
+                            </button>
+                        </div>
+
+                        <div class="bg-white rounded-xl shadow-md overflow-hidden">
+                            <table class="w-full">
+                                <thead>
+                                    <tr class="bg-gray-50 border-b">
+                                        <th class="text-left p-4">Sản phẩm</th>
+                                        <th class="text-left p-4">Giá</th>
+                                        <th class="text-left p-4">Hãng</th>
+                                        <th class="text-left p-4">Trạng thái</th>
+                                        <th class="text-right p-4">Thao tác</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="adminProductsList">
+                                    
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- Quản lý đơn hàng -->
+                    <div id="adminOrders" class="admin-content hidden">
+                        <h2 class="text-2xl font-bold mb-6">Quản lý đơn hàng</h2>
+
+                        <div class="bg-white rounded-xl shadow-md overflow-hidden">
+                            <table class="w-full">
+                                <thead>
+                                    <tr class="bg-gray-50 border-b">
+                                        <th class="text-left p-4">Mã đơn</th>
+                                        <th class="text-left p-4">Khách hàng</th>
+                                        <th class="text-left p-4">Tổng tiền</th>
+                                        <th class="text-left p-4">Trạng thái</th>
+                                        <th class="text-left p-4">Ngày đặt</th>
+                                        <th class="text-right p-4">Thao tác</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="adminOrdersList">
+                                    
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- Quản lý người dùng -->
+                    <div id="adminUsers" class="admin-content hidden">
+                        <h2 class="text-2xl font-bold mb-6">Quản lý người dùng</h2>
+
+                        <div class="bg-white rounded-xl shadow-md overflow-hidden">
+                            <table class="w-full">
+                                <thead>
+                                    <tr class="bg-gray-50 border-b">
+                                        <th class="text-left p-4">Email</th>
+                                        <th class="text-left p-4">Tên</th>
+                                        <th class="text-left p-4">Quyền</th>
+                                        <th class="text-left p-4">Trạng thái</th>
+                                        <th class="text-right p-4">Thao tác</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="adminUsersList">
+                                    
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Modal đăng nhập -->
+    <div id="loginModal" class="modal fixed inset-0 bg-black/50 z-50 flex items-center justify-center hidden">
+        <div class="bg-white rounded-xl w-full max-w-md p-6 m-4">
+            <div class="flex justify-between items-center mb-6">
+                <h3 class="text-xl font-bold">Đăng nhập</h3>
+                <button onclick="hideModal('loginModal')" class="text-gray-500 hover:text-gray-700">
+                    <i class="fa fa-times"></i>
+                </button>
+            </div>
+
+            <div id="loginError" class="hidden bg-red-50 text-red-600 p-3 rounded-lg mb-4">
+                Email hoặc mật khẩu không đúng
+            </div>
+
+            <form onsubmit="processLogin(event)">
+                <div class="space-y-4">
+                    <div>
+                        <label class="block text-sm text-gray-600 mb-1">Email</label>
+                        <input id="loginEmail" type="email" required class="w-full p-3 rounded-lg border border-gray-300">
+                    </div>
+                    <div>
+                        <label class="block text-sm text-gray-600 mb-1">Mật khẩu</label>
+                        <input id="loginPassword" type="password" required class="w-full p-3 rounded-lg border border-gray-300">
+                    </div>
+                    <button type="submit" class="btn-primary w-full">Đăng nhập</button>
+                </div>
+            </form>
+
+            <p class="text-center mt-4 text-gray-600">
+                Chưa có tài khoản? <a href="#" onclick="hideModal('loginModal'); showModal('registerModal')" class="text-primary font-medium">Đăng ký ngay</a>
+            </p>
+
+            <div class="mt-4 p-3 bg-gray-50 rounded-lg text-sm text-gray-600">
+                <p class="font-medium">Tài khoản thử nghiệm:</p>
+                <p>Admin: admin@phoenix.com / admin123</p>
+                <p>Người dùng: user@phoenix.com / user123</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal đăng ký -->
+    <div id="registerModal" class="modal fixed inset-0 bg-black/50 z-50 flex items-center justify-center hidden">
+        <div class="bg-white rounded-xl w-full max-w-md p-6 m-4">
+            <div class="flex justify-between items-center mb-6">
+                <h3 class="text-xl font-bold">Đăng ký tài khoản</h3>
+                <button onclick="hideModal('registerModal')" class="text-gray-500 hover:text-gray-700">
+                    <i class="fa fa-times"></i>
+                </button>
+            </div>
+
+            <form onsubmit="processRegister(event)">
+                <div class="space-y-4">
+                    <div>
+                        <label class="block text-sm text-gray-600 mb-1">Họ tên</label>
+                        <input id="registerName" type="text" required class="w-full p-3 rounded-lg border border-gray-300">
+                    </div>
+                    <div>
+                        <label class="block text-sm text-gray-600 mb-1">Email</label>
+                        <input id="registerEmail" type="email" required class="w-full p-3 rounded-lg border border-gray-300">
+                    </div>
+                    <div>
+                        <label class="block text-sm text-gray-600 mb-1">Mật khẩu</label>
+                        <input id="registerPassword" type="password" required minlength="6" class="w-full p-3 rounded-lg border border-gray-300">
+                    </div>
+                    <button type="submit" class="btn-primary w-full">Đăng ký</button>
+                </div>
+            </form>
+
+            <p class="text-center mt-4 text-gray-600">
+                Đã có tài khoản? <a href="#" onclick="hideModal('registerModal'); showModal('loginModal')" class="text-primary font-medium">Đăng nhập</a>
+            </p>
+        </div>
+    </div>
+
+    <!-- Modal thêm sản phẩm -->
+    <div id="addProductModal" class="modal fixed inset-0 bg-black/50 z-50 flex items-center justify-center hidden">
+        <div class="bg-white rounded-xl w-full max-w-lg p-6 m-4 max-h-[90vh] overflow-y-auto">
+            <div class="flex justify-between items-center mb-6">
+                <h3 class="text-xl font-bold">Thêm sản phẩm mới</h3>
+                <button onclick="hideModal('addProductModal')" class="text-gray-500 hover:text-gray-700">
+                    <i class="fa fa-times"></i>
+                </button>
+            </div>
+
+            <form onsubmit="addNewProduct(event)">
+                <div class="space-y-4">
+                    <div>
+                        <label class="block text-sm text-gray-600 mb-1">Tên sản phẩm</label>
+                        <input id="productName" type="text" required class="w-full p-3 rounded-lg border border-gray-300">
+                    </div>
+                    <div class="grid grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-sm text-gray-600 mb-1">Hãng sản xuất</label>
+                            <select id="productBrand" required class="w-full p-3 rounded-lg border border-gray-300">
+                                <option value="Apple">Apple</option>
+                                <option value="Samsung">Samsung</option>
+                                <option value="Xiaomi">Xiaomi</option>
+                                <option value="Oppo">Oppo</option>
+                                <option value="Vivo">Vivo</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-sm text-gray-600 mb-1">Giá (VNĐ)</label>
+                            <input id="productPrice" type="number" required class="w-full p-3 rounded-lg border border-gray-300">
+                        </div>
+                    </div>
+                    <div>
+                        <label class="block text-sm text-gray-600 mb-1">Link ảnh sản phẩm</label>
+                        <input id="productImage" type="url" required class="w-full p-3 rounded-lg border border-gray-300">
+                    </div>
+                    <div>
+                        <label class="block text-sm text-gray-600 mb-1">Mô tả sản phẩm</label>
+                        <textarea id="productDescription" rows="3" required class="w-full p-3 rounded-lg border border-gray-300"></textarea>
+                    </div>
+                    <div class="grid grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-sm text-gray-600 mb-1">Bộ nhớ (GB)</label>
+                            <input id="productMemory" type="number" required class="w-full p-3 rounded-lg border border-gray-300">
+                        </div>
+                        <div>
+                            <label class="block text-sm text-gray-600 mb-1">RAM (GB)</label>
+                            <input id="productRam" type="number" required class="w-full p-3 rounded-lg border border-gray-300">
+                        </div>
+                    </div>
+                    
+                    <button type="submit" class="btn-primary w-full">Thêm sản phẩm</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Toast thông báo -->
+    <div id="toast" class="fixed bottom-6 right-6 bg-green-500 text-white px-6 py-3 rounded-lg shadow-lg transform translate-y-20 opacity-0 transition-all duration-300 z-50">
+        Thông báo
+    </div>
+
+    <script>
+        // Dữ liệu hệ thống
+        let products = [
+            { id: 1, name: "iPhone 17 Pro Max", brand: "Apple", price: 37990000, memory: 256, ram: 8, image: "https://cdn2.cellphones.com.vn/x/media/catalog/product/i/p/iphone-17-pro-max_3.jpg", description: "Kích thước màn hình:6.9 inches,Chip A19 Pro,IOS 26" },
+            { id: 1, name: "iPhone 15 Pro Max", brand: "Apple", price: 32990000, memory: 256, ram: 8, image: "https://cdn2.cellphones.com.vn/x/media/catalog/product/i/p/iphone-15-plus_1__1.png", description: "iPhone mạnh nhất từng được tạo ra, chip A17 Pro, khung titan, camera 48MP" },
+            { id: 2, name: "Samsung Galaxy S24 Ultra", brand: "Samsung", price: 28990000, memory: 256, ram: 12, image: "https://cdn2.cellphones.com.vn/358x/media/catalog/product/l/a/laptop-lenovo-v14-g3-iap-82ts005yvn-cu-tray-xuoc_29_.png", description: "Điện thoại flagship của Samsung với bút S Pen tích hợp, chip Snapdragon 8 Gen 3" },
+            { id: 3, name: "iPhone 15", brand: "Apple", price: 19990000, memory: 128, ram: 6, image: "https://cdn2.cellphones.com.vn/x/media/catalog/product/i/p/iphone-15-pro-max_2__4_1.jpg", description: "iPhone 15 với Dynamic Island, camera 48MP, chip A16 Bionic" },
+            { id: 4, name: "Xiaomi 14 Ultra", brand: "Xiaomi", price: 24990000, memory: 256, ram: 16, image: "https://cdn2.cellphones.com.vn/x/media/catalog/product/x/i/xiaomi-14-ultra_1_1.jpg?_gl=1*yj5ubi*_gcl_au*MjE0Mzg3OTI5Ni4xNzczODIwMTQx*_ga*MTQyNjM5ODg5MS4xNzczODIwMTQx*_ga_QLK8WFHNK9*czE3NzQ2ODYyMjkkbzUkZzEkdDE3NzQ2ODY3MjEkajYkbDAkaDkxNTA1NTUyOA..", description: "Flagship camera của Xiaomi với cảm biến 1 inch, Leica optics" },
+            { id: 5, name: "Samsung Galaxy Z Fold 5", brand: "Samsung", price: 39990000, memory: 512, ram: 12, image: "https://cdn2.cellphones.com.vn/x/media/catalog/product/s/a/samsung-galaxy-z-fold-6-xanh_5__1_1_1_1.png", description: "Điện thoại gập hàng đầu của Samsung, màn hình trong 7.6 inch" },
+            { id: 6, name: "Oppo Find X7 Ultra", brand: "Oppo", price: 27990000, memory: 256, ram: 16, image: "https://cdn2.cellphones.com.vn/x/media/catalog/product/e/d/eda006276802c.jpg", description: "Flagship camera của Oppo với cảm biến Sony LYT-900, periscope 10x" },
+            { id: 7, name: "Vivo X100 Pro", brand: "Vivo", price: 22990000, memory: 256, ram: 12, image: "https://cdn2.cellphones.com.vn/x/media/catalog/product/d/i/dien-thoai-vivo-x100-pro_1_.png", description: "Điện thoại camera chuyên nghiệp Vivo, Zeiss optics, chip Dimensity 9300" },
+            { id: 8, name: "iPhone 14", brand: "Apple", price: 14990000, memory: 128, ram: 6, image: "https://cdn2.cellphones.com.vn/x/media/catalog/product/i/p/iphone-14-256gb.jpg", description: "iPhone 14 vẫn là lựa chọn tuyệt vời với hiệu năng ổn định" },
+        ];
+
+        let users = [
+            { id: 1, name: "Administrator", email: "admin@phoenix.com", password: "admin123", role: "admin", status: "active" },
+            { id: 2, name: "Người dùng thử", email: "user@phoenix.com", password: "user123", role: "user", status: "active" }
+        ];
+
+        let orders = [
+            { id: "DH001", userId: 2, total: 32990000, status: "pending", date: "2024-05-10" },
+            { id: "DH002", userId: 2, total: 19990000, status: "delivered", date: "2024-05-05" },
+        ];
+
+        let cart = [];
+        let currentUser = null;
+        let currentFilter = { brand: '', price: '', memory: '', sort: '' };
+
+        // Khởi tạo ứng dụng
+        document.addEventListener('DOMContentLoaded', function() {
+            renderProducts();
+            updateCartCount();
+            checkLoginStatus();
+        });
+
+        // Hiển thị sản phẩm
+        function renderProducts() {
+            let filteredProducts = [...products];
+            
+            // Áp dụng bộ lọc
+            if (currentFilter.brand && currentFilter.brand !== 'all') {
+                filteredProducts = filteredProducts.filter(p => p.brand === currentFilter.brand);
+            }
+            
+            if (currentFilter.price) {
+                const [min, max] = currentFilter.price.split('-').map(Number);
+                filteredProducts = filteredProducts.filter(p => {
+                    if (max) return p.price >= min && p.price <= max;
+                    return p.price >= min;
+                });
+            }
+
+            if (currentFilter.memory) {
+                filteredProducts = filteredProducts.filter(p => p.memory === Number(currentFilter.memory));
+            }
+
+            // Sắp xếp
+            if (currentFilter.sort === 'price_asc') {
+                filteredProducts.sort((a,b) => a.price - b.price);
+            } else if (currentFilter.sort === 'price_desc') {
+                filteredProducts.sort((a,b) => b.price - a.price);
+            }
+
+            const container = document.getElementById('productsList');
+            container.innerHTML = filteredProducts.map(product => `
+                <div class="bg-white rounded-xl overflow-hidden shadow-md card-hover cursor-pointer" onclick="showProductDetail(${product.id})">
+                    <div class="relative h-48 overflow-hidden">
+                        <img src="${product.image}" alt="${product.name}" class="w-full h-full object-cover">
+                        <div class="absolute top-2 right-2 bg-primary text-white text-xs px-2 py-1 rounded-full">Mới</div>
+                    </div>
+                    <div class="p-4">
+                        <p class="text-sm text-gray-500 mb-1">${product.brand}</p>
+                        <h3 class="font-bold mb-2 line-clamp-1">${product.name}</h3>
+                        <p class="text-primary font-bold text-lg mb-4">${formatPrice(product.price)}₫</p>
+                        <button onclick="event.stopPropagation(); addToCart(${product.id})" class="btn-primary w-full py-2.5 text-sm">
+                            Thêm vào giỏ
+                        </button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Chi tiết sản phẩm
+        function showProductDetail(productId) {
+            const product = products.find(p => p.id === productId);
+            if (!product) return;
+
+            document.getElementById('productDetail').innerHTML = `
+                <div class="grid md:grid-cols-2 gap-8 p-6">
+                    <div>
+                        <img src="${product.image}" alt="${product.name}" class="w-full rounded-xl shadow-md">
+                    </div>
+                    <div>
+                        <p class="text-gray-500 mb-2">${product.brand}</p>
+                        <h1 class="text-3xl font-bold mb-4">${product.name}</h1>
+                        <p class="text-3xl font-bold text-primary mb-6">${formatPrice(product.price)}₫</p>
+                        
+                        <div class="space-y-3 mb-6">
+                            <div class="flex items-center">
+                                <span class="w-32 text-gray-600">Bộ nhớ:</span>
+                                <span class="font-medium">${product.memory} GB</span>
+                            </div>
+                            <div class="flex items-center">
+                                <span class="w-32 text-gray-600">RAM:</span>
+                                <span class="font-medium">${product.ram} GB</span>
+                            </div>
+                        </div>
+
+                        <p class="text-gray-600 mb-8">${product.description}</p>
+
+                        <div class="flex gap-4">
+                            <button onclick="addToCart(${product.id})" class="btn-outline flex-1 py-4">
+                                <i class="fa fa-shopping-cart mr-2"></i> Thêm vào giỏ
+                            </button>
+                            <button onclick="buyNow(${product.id})" class="btn-primary flex-1 py-4">
+                                Mua ngay
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `;
+
+            showPage('product');
+        }
+
+        // Giỏ hàng
+        function addToCart(productId) {
+            const existing = cart.find(item => item.productId === productId);
+            if (existing) {
+                existing.quantity++;
+            } else {
+                cart.push({ productId, quantity: 1 });
+            }
+            updateCartCount();
+            showToast('Đã thêm sản phẩm vào giỏ hàng');
+        }
+
+        function buyNow(productId) {
+            addToCart(productId);
+            showPage('cart');
+        }
+
+        function updateCartCount() {
+            const count = cart.reduce((sum, item) => sum + item.quantity, 0);
+            document.getElementById('cartCount').textContent = count;
+        }
+
+        function renderCart() {
+            if (cart.length === 0) {
+                document.getElementById('cartContent').innerHTML = `
+                    <div class="bg-white rounded-xl shadow-md p-12 text-center">
+                        <i class="fa fa-shopping-cart text-6xl text-gray-300 mb-4"></i>
+                        <h3 class="text-xl font-bold mb-2">Giỏ hàng trống</h3>
+                        <p class="text-gray-500 mb-6">Hãy thêm sản phẩm vào giỏ hàng</p>
+                        <button onclick="showPage('home')" class="btn-primary">Mua sắm ngay</button>
+                    </div>
+                `;
+                return;
+            }
+
+            let total = 0;
+            const items = cart.map(item => {
+                const product = products.find(p => p.id === item.productId);
+                total += product.price * item.quantity;
+                return { ...item, product };
+            });
+
+            document.getElementById('cartContent').innerHTML = `
+                <div class="bg-white rounded-xl shadow-md overflow-hidden">
+                    <div class="divide-y">
+                        ${items.map(item => `
+                            <div class="p-4 flex items-center gap-4">
+                                <img src="${item.product.image}" class="w-20 h-20 object-cover rounded-lg">
+                                <div class="flex-1">
+                                    <h4 class="font-bold">${item.product.name}</h4>
+                                    <p class="text-primary font-bold">${formatPrice(item.product.price)}₫</p>
+                                </div>
+                                <div class="flex items-center border rounded-lg">
+                                    <button onclick="updateCartItem(${item.productId}, ${item.quantity - 1})" class="px-3 py-2">
+                                        <i class="fa fa-minus"></i>
+                                    </button>
+                                    <span class="px-3 py-2 border-x">${item.quantity}</span>
+                                    <button onclick="updateCartItem(${item.productId}, ${item.quantity + 1})" class="px-3 py-2">
+                                        <i class="fa fa-plus"></i>
+                                    </button>
+                                </div>
+                                <p class="font-bold w-24 text-right">${formatPrice(item.product.price * item.quantity)}₫</p>
+                                <button onclick="updateCartItem(${item.productId}, 0)" class="text-red-500 p-2">
+                                    <i class="fa fa-trash"></i>
+                                </button>
+                            </div>
+                        `).join('')}
+                    </div>
+
+                    <div class="p-4 bg-gray-50 border-t">
+                        <div class="flex justify-between mb-4 text-lg">
+                            <span class="font-bold">Tổng cộng</span>
+                            <span class="font-bold text-primary text-xl">${formatPrice(total)}₫</span>
+                        </div>
+                        <button onclick="showPage('checkout')" class="btn-primary w-full py-4 text-lg">
+                            Tiến hành thanh toán
+                        </button>
+                    </div>
+                </div>
+            `;
+        }
+
+        function updateCartItem(productId, quantity) {
+            if (quantity <= 0) {
+                cart = cart.filter(item => item.productId !== productId);
+            } else {
+                const item = cart.find(i => i.productId === productId);
+                if (item) item.quantity = quantity;
+            }
+            updateCartCount();
+            renderCart();
+            renderCheckout();
+        }
+
+        function renderCheckout() {
+            let subtotal = 0;
+            cart.forEach(item => {
+                const product = products.find(p => p.id === item.productId);
+                subtotal += product.price * item.quantity;
+            });
+
+            document.getElementById('checkoutItems').innerHTML = cart.map(item => {
+                const product = products.find(p => p.id === item.productId);
+                return `
+                    <div class="flex justify-between">
+                        <span>${product.name} x ${item.quantity}</span>
+                        <span>${formatPrice(product.price * item.quantity)}₫</span>
+                    </div>
+                `;
+            }).join('');
+
+            document.getElementById('checkoutSubtotal').textContent = formatPrice(subtotal) + '₫';
+            document.getElementById('checkoutTotal').textContent = formatPrice(subtotal + 30000) + '₫';
+        }
+
+        function processCheckout(e) {
+            e.preventDefault();
+            
+            if (!currentUser) {
+                showToast('Vui lòng đăng nhập để đặt hàng');
+                showModal('loginModal');
+                return;
+            }
+
+            let total = 0;
+            cart.forEach(item => {
+                const product = products.find(p => p.id === item.productId);
+                total += product.price * item.quantity;
+            });
+            total += 30000;
+
+            const newOrder = {
+                id: 'DH' + String(orders.length + 1).padStart(3, '0'),
+                userId: currentUser.id,
+                total: total,
+                status: 'pending',
+                date: new Date().toISOString().split('T')[0]
+            };
+
+            orders.push(newOrder);
+            cart = [];
+            updateCartCount();
+            
+            showPage('thankyou');
+        }
+
+        // Xác thực người dùng
+        function processLogin(e) {
+            e.preventDefault();
+            const email = document.getElementById('loginEmail').value;
+            const password = document.getElementById('loginPassword').value;
+
+            const user = users.find(u => u.email === email && u.password === password);
+            
+            if (user) {
+                currentUser = user;
+                hideModal('loginModal');
+                updateUserMenu();
+                showToast('Đăng nhập thành công');
+            } else {
+                document.getElementById('loginError').classList.remove('hidden');
+            }
+        }
+
+        function processRegister(e) {
+            e.preventDefault();
+            const name = document.getElementById('registerName').value;
+            const email = document.getElementById('registerEmail').value;
+            const password = document.getElementById('registerPassword').value;
+
+            const existing = users.find(u => u.email === email);
+            if (existing) {
+                showToast('Email đã được đăng ký');
+                return;
+            }
+
+            users.push({
+                id: users.length + 1,
+                name, email, password,
+                role: 'user',
+                status: 'active'
+            });
+
+            hideModal('registerModal');
+            showToast('Đăng ký thành công, vui lòng đăng nhập');
+            showModal('loginModal');
+        }
+
+        function logout() {
+            currentUser = null;
+            updateUserMenu();
+            showPage('home');
+            showToast('Đã đăng xuất');
+        }
+
+        function updateUserMenu() {
+            if (currentUser) {
+                document.getElementById('userName').textContent = currentUser.name;
+                document.getElementById('loggedOutMenu').classList.add('hidden');
+                document.getElementById('loggedInMenu').classList.remove('hidden');
+                
+                if (currentUser.role === 'admin') {
+                    document.getElementById('adminLink').classList.remove('hidden');
+                }
+            } else {
+                document.getElementById('userName').textContent = 'Tài khoản';
+                document.getElementById('loggedOutMenu').classList.remove('hidden');
+                document.getElementById('loggedInMenu').classList.add('hidden');
+            }
+        }
+
+        function checkLoginStatus() {
+            updateUserMenu();
+        }
+
+        // Admin functions
+        function renderAdminProducts() {
+            document.getElementById('adminProductsList').innerHTML = products.map(product => `
+                <tr class="border-b hover:bg-gray-50">
+                    <td class="p-4">
+                        <div class="flex items-center gap-3">
+                            <img src="${product.image}" class="w-12 h-12 rounded-lg object-cover">
+                            <span class="font-medium">${product.name}</span>
+                        </div>
+                    </td>
+                    <td class="p-4">${formatPrice(product.price)}₫</td>
+                    <td class="p-4">${product.brand}</td>
+                    <td class="p-4"><span class="bg-green-100 text-green-700 px-2 py-1 rounded-full text-sm">Đang bán</span></td>
+                    <td class="p-4 text-right">
+                        <button class="text-blue-500 p-2" title="Sửa"><i class="fa fa-edit"></i></button>
+                        <button onclick="deleteProduct(${product.id})" class="text-red-500 p-2" title="Xóa"><i class="fa fa-trash"></i></button>
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        function renderAdminOrders() {
+            const statusColors = {
+                pending: 'bg-yellow-100 text-yellow-700',
+                shipping: 'bg-blue-100 text-blue-700',
+                delivered: 'bg-green-100 text-green-700',
+                cancelled: 'bg-red-100 text-red-700'
+            };
+
+            const statusNames = {
+                pending: 'Chờ xác nhận',
+                shipping: 'Đang giao',
+                delivered: 'Đã giao',
+                cancelled: 'Đã hủy'
+            };
+
+            document.getElementById('adminOrdersList').innerHTML = orders.map(order => `
+                <tr class="border-b hover:bg-gray-50">
+                    <td class="p-4 font-medium">${order.id}</td>
+                    <td class="p-4">${users.find(u => u.id === order.userId)?.name || 'N/A'}</td>
+                    <td class="p-4">${formatPrice(order.total)}₫</td>
+                    <td class="p-4">
+                        <select onchange="updateOrderStatus('${order.id}', this.value)" class="border rounded px-2 py-1">
+                            ${Object.keys(statusNames).map(status => `
+                                <option value="${status}" ${order.status === status ? 'selected' : ''}>${statusNames[status]}</option>
+                            `).join('')}
+                        </select>
+                    </td>
+                    <td class="p-4">${order.date}</td>
+                    <td class="p-4 text-right">
+                        <button class="text-blue-500 p-2"><i class="fa fa-eye"></i></button>
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        function renderAdminUsers() {
+            document.getElementById('adminUsersList').innerHTML = users.map(user => `
+                <tr class="border-b hover:bg-gray-50">
+                    <td class="p-4">${user.email}</td>
+                    <td class="p-4">${user.name}</td>
+                    <td class="p-4">
+                        <span class="px-2 py-1 rounded-full text-sm ${user.role === 'admin' ? 'bg-red-100 text-red-700' : 'bg-gray-100 text-gray-700'}">
+                            ${user.role === 'admin' ? 'Quản trị' : 'Người dùng'}
+                        </span>
+                    </td>
+                    <td class="p-4">
+                        <span class="bg-green-100 text-green-700 px-2 py-1 rounded-full text-sm">Hoạt động</span>
+                    </td>
+                    <td class="p-4 text-right">
+                        <button class="text-red-500 p-2" title="Khóa"><i class="fa fa-ban"></i></button>
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        function addNewProduct(e) {
+            e.preventDefault();
+            
+            const newProduct = {
+                id: products.length + 1,
+                name: document.getElementById('productName').value,
+                brand: document.getElementById('productBrand').value,
+                price: Number(document.getElementById('productPrice').value),
+                memory: Number(document.getElementById('productMemory').value),
+                ram: Number(document.getElementById('productRam').value),
+                image: document.getElementById('productImage').value,
+                description: document.getElementById('productDescription').value
+            };
+
+            products.push(newProduct);
+            hideModal('addProductModal');
+            renderProducts();
+            renderAdminProducts();
+            showToast('Đã thêm sản phẩm mới');
+            
+            e.target.reset();
+        }
+
+        function deleteProduct(productId) {
+            if (confirm('Bạn có chắc muốn xóa sản phẩm này?')) {
+                products = products.filter(p => p.id !== productId);
+                renderProducts();
+                renderAdminProducts();
+                showToast('Đã xóa sản phẩm');
+            }
+        }
+
+        function updateOrderStatus(orderId, status) {
+            const order = orders.find(o => o.id === orderId);
+            if (order) {
+                order.status = status;
+                showToast('Đã cập nhật trạng thái đơn hàng');
+            }
+        }
+
+        function initDashboardChart() {
+            const ctx = document.getElementById('revenueChart');
+            if (ctx) {
+                new Chart(ctx, {
+                    type: 'line',
+                    data: {
+                        labels: ['Thứ 2', 'Thứ 3', 'Thứ 4', 'Thứ 5', 'Thứ 6', 'Thứ 7', 'Chủ nhật'],
+                        datasets: [{
+                            label: 'Doanh thu (triệu VNĐ)',
+                            data: [42, 38, 55, 48, 62, 71, 58],
+                            borderColor: '#DC2626',
+                            backgroundColor: 'rgba(220, 38, 38, 0.1)',
+                            tension: 0.4,
+                            fill: true
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        plugins: {
+                            legend: {
+                                display: false
+                            }
+                        }
+                    }
+                });
+            }
+        }
+
+        function showAdminTab(tab) {
+            document.querySelectorAll('.admin-tab').forEach(el => el.classList.remove('bg-primary'));
+            document.querySelectorAll('.admin-content').forEach(el => el.classList.add('hidden'));
+
+            event.target.classList.add('bg-primary');
+
+            if (tab === 'dashboard') {
+                document.getElementById('adminDashboard').classList.remove('hidden');
+                setTimeout(initDashboardChart, 100);
+            } else if (tab === 'products') {
+                document.getElementById('adminProducts').classList.remove('hidden');
+                renderAdminProducts();
+            } else if (tab === 'orders') {
+                document.getElementById('adminOrders').classList.remove('hidden');
+                renderAdminOrders();
+            } else if (tab === 'users') {
+                document.getElementById('adminUsers').classList.remove('hidden');
+                renderAdminUsers();
+            }
+        }
+
+        // Các hàm tiện ích
+        function showPage(page) {
+            document.querySelectorAll('.page').forEach(p => p.classList.add('hidden'));
+            
+            if (page === 'home') {
+                document.getElementById('homePage').classList.remove('hidden');
+                renderProducts();
+            } else if (page === 'product') {
+                document.getElementById('productPage').classList.remove('hidden');
+            } else if (page === 'cart') {
+                document.getElementById('cartPage').classList.remove('hidden');
+                renderCart();
+            } else if (page === 'checkout') {
+                document.getElementById('checkoutPage').classList.remove('hidden');
+                renderCheckout();
+            } else if (page === 'orders') {
+                document.getElementById('ordersPage').classList.remove('hidden');
+                renderOrders();
+            } else if (page === 'thankyou') {
+                document.getElementById('thankyouPage').classList.remove('hidden');
+            } else if (page === 'admin') {
+                if (!currentUser || currentUser.role !== 'admin') {
+                    showToast('Bạn không có quyền truy cập');
+                    showModal('loginModal');
+                    return;
+                }
+                document.getElementById('adminPage').classList.remove('hidden');
+                setTimeout(initDashboardChart, 100);
+            }
+
+            window.scrollTo(0, 0);
+            document.getElementById('userDropdown').classList.add('hidden');
+        }
+
+        function renderOrders() {
+            if (!currentUser) {
+                document.getElementById('ordersList').innerHTML = '<p class="text-center py-12">Vui lòng đăng nhập để xem đơn hàng</p>';
+                return;
+            }
+
+            const userOrders = orders.filter(o => o.userId === currentUser.id);
+            
+            const statusNames = {
+                pending: 'Chờ xác nhận',
+                shipping: 'Đang giao',
+                delivered: 'Đã giao',
+                cancelled: 'Đã hủy'
+            };
+
+            document.getElementById('ordersList').innerHTML = userOrders.map(order => `
+                <div class="bg-white rounded-xl shadow-md p-6">
+                    <div class="flex justify-between items-start mb-4">
+                        <div>
+                            <p class="font-bold">Mã đơn: ${order.id}</p>
+                            <p class="text-sm text-gray-500">Ngày đặt: ${order.date}</p>
+                        </div>
+                        <span class="px-3 py-1 rounded-full text-sm bg-yellow-100 text-yellow-700">${statusNames[order.status]}</span>
+                    </div>
+                    <div class="flex justify-between items-center">
+                        <span>Tổng tiền</span>
+                        <span class="font-bold text-lg text-primary">${formatPrice(order.total)}₫</span>
+                    </div>
+                </div>
+            `).join('');
+
+            if (userOrders.length === 0) {
+                document.getElementById('ordersList').innerHTML = '<p class="text-center py-12">Bạn chưa có đơn hàng nào</p>';
+            }
+        }
+
+        function searchProduct() {
+            const keyword = document.getElementById('searchInput').value.toLowerCase();
+            const filtered = products.filter(p => p.name.toLowerCase().includes(keyword));
+            
+            if (keyword.length > 0) {
+                let tempProducts = [...products];
+                products = filtered;
+                renderProducts();
+                products = tempProducts;
+            } else {
+                renderProducts();
+            }
+        }
+
+        function applyFilters() {
+            currentFilter.brand = document.getElementById('filterBrand').value;
+            currentFilter.price = document.getElementById('filterPrice').value;
+            currentFilter.memory = document.getElementById('filterMemory').value;
+            currentFilter.sort = document.getElementById('filterSort').value;
+            renderProducts();
+        }
+
+        function filterByBrand(brand) {
+            currentFilter.brand = brand;
+            document.getElementById('filterBrand').value = brand;
+            renderProducts();
+            scrollToProducts();
+        }
+
+        function scrollToProducts() {
+            document.getElementById('productsSection').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function toggleCart() {
+            showPage('cart');
+        }
+
+        function toggleUserMenu() {
+            document.getElementById('userDropdown').classList.toggle('hidden');
+        }
+
+        function showModal(modalId) {
+            document.getElementById(modalId).classList.remove('hidden');
+        }
+
+        function hideModal(modalId) {
+            document.getElementById(modalId).classList.add('hidden');
+            document.getElementById('loginError').classList.add('hidden');
+        }
+
+        function showToast(message) {
+            const toast = document.getElementById('toast');
+            toast.textContent = message;
+            toast.classList.remove('translate-y-20', 'opacity-0');
+            
+            setTimeout(() => {
+                toast.classList.add('translate-y-20', 'opacity-0');
+            }, 3000);
+        }
+
+        function formatPrice(price) {
+            return price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+        }
+
+        // Đóng dropdown khi click ngoài
+        document.addEventListener('click', function(e) {
+            if (!document.getElementById('userMenu').contains(e.target)) {
+                document.getElementById('userDropdown').classList.add('hidden');
+            }
+        });
+    </script>
+</body>
+</html>

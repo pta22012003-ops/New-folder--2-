@@ -1,0 +1,889 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chi tiết sản phẩm - PHOENIX ELECTRONICS</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="font-['Inter'] bg-gray-50">
+    <!-- Header -->
+    <header class="sticky top-0 z-50 bg-gray-900 text-white shadow-lg">
+        <div class="container mx-auto px-4">
+            <div class="flex items-center justify-between h-16">
+                <a href="index.html" class="flex items-center space-x-2">
+                    <i data-lucide="flame" class="w-8 h-8 text-orange-500"></i>
+                    <span class="text-xl font-bold tracking-wider">PHOENIX<span class="text-orange-500">ELECTRONICS</span></span>
+                </a>
+                
+                <nav class="hidden md:flex items-center space-x-8">
+                    <a href="index.html" class="hover:text-orange-500 transition-colors font-medium">Trang chủ</a>
+                    <a href="index.html#products" class="hover:text-orange-500 transition-colors font-medium">Sản phẩm</a>
+                    <a href="index.html#deals" class="hover:text-orange-500 transition-colors font-medium">Khuyến mãi</a>
+                </nav>
+
+                <div class="flex items-center space-x-4">
+                    <button onclick="window.location.href='index.html'" class="p-2 hover:bg-gray-800 rounded-full transition-colors">
+                        <i data-lucide="arrow-left" class="w-6 h-6"></i>
+                    </button>
+                    <button onclick="toggleCart()" class="relative p-2 hover:bg-gray-800 rounded-full transition-colors">
+                        <i data-lucide="shopping-cart" class="w-6 h-6"></i>
+                        <span id="cartCount" class="absolute -top-1 -right-1 bg-orange-500 text-white text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center">0</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Breadcrumb -->
+    <div class="bg-white border-b">
+        <div class="container mx-auto px-4 py-4">
+            <div class="flex items-center space-x-2 text-sm text-gray-600">
+                <a href="index.html" class="hover:text-orange-500">Trang chủ</a>
+                <i data-lucide="chevron-right" class="w-4 h-4"></i>
+                <a href="index.html#products" class="hover:text-orange-500">Sản phẩm</a>
+                <i data-lucide="chevron-right" class="w-4 h-4"></i>
+                <span id="breadcrumbName" class="text-gray-900 font-medium">Chi tiết sản phẩm</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Product Detail Section -->
+    <section class="py-8 md:py-12">
+        <div class="container mx-auto px-4">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
+                <!-- Product Images -->
+                <div class="space-y-4">
+                    <div class="bg-white rounded-2xl shadow-lg overflow-hidden aspect-square relative group">
+                        <img id="mainImage" src="" alt="Product" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
+                        <div id="discountBadge" class="absolute top-4 left-4 bg-red-500 text-white px-3 py-1 rounded-full text-sm font-bold hidden">
+                            -0%
+                        </div>
+                    </div>
+                    <div class="grid grid-cols-4 gap-4">
+                        <button class="aspect-square rounded-xl overflow-hidden border-2 border-orange-500 ring-2 ring-orange-200">
+                            <img id="thumb1" src="" class="w-full h-full object-cover">
+                        </button>
+                        <button class="aspect-square rounded-xl overflow-hidden border-2 border-gray-200 hover:border-orange-500 transition-colors">
+                            <img id="thumb2" src="https://images.unsplash.com/photo-1592750475338-74b7b21085ab?w=200&h=200&fit=crop" class="w-full h-full object-cover">
+                        </button>
+                        <button class="aspect-square rounded-xl overflow-hidden border-2 border-gray-200 hover:border-orange-500 transition-colors">
+                            <img id="thumb3" src="https://images.unsplash.com/photo-1512054502232-10a0a035d672?w=200&h=200&fit=crop" class="w-full h-full object-cover">
+                        </button>
+                        <button class="aspect-square rounded-xl overflow-hidden border-2 border-gray-200 hover:border-orange-500 transition-colors">
+                            <img id="thumb4" src="https://images.unsplash.com/photo-1586105251261-72a756497a11?w=200&h=200&fit=crop" class="w-full h-full object-cover">
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Product Info -->
+                <div class="space-y-6">
+                    <div>
+                        <div class="flex items-center space-x-2 mb-2">
+                            <span id="brandBadge" class="px-3 py-1 bg-gray-100 text-gray-600 rounded-full text-sm font-medium uppercase">Brand</span>
+                            <div class="flex items-center space-x-1">
+                                <i data-lucide="star" class="w-4 h-4 text-yellow-400 fill-current"></i>
+                                <span class="font-medium">4.9</span>
+                                <span class="text-gray-400 text-sm">(128 đánh giá)</span>
+                            </div>
+                        </div>
+                        <h1 id="productName" class="text-3xl md:text-4xl font-bold text-gray-900 mb-4">Tên sản phẩm</h1>
+                        <div class="flex items-baseline space-x-4">
+                            <span id="productPrice" class="text-3xl md:text-4xl font-bold text-orange-600">0₫</span>
+                            <span id="originalPrice" class="text-xl text-gray-400 line-through hidden">0₫</span>
+                        </div>
+                    </div>
+
+                    <!-- Short Specs -->
+                    <div class="flex flex-wrap gap-3" id="shortSpecs">
+                        <!-- Rendered by JS -->
+                    </div>
+
+                    <!-- Color Selection -->
+                    <div>
+                        <h3 class="font-semibold text-gray-900 mb-3">Màu sắc</h3>
+                        <div class="flex space-x-3">
+                            <button class="w-10 h-10 rounded-full bg-gray-800 border-2 border-orange-500 ring-2 ring-orange-200"></button>
+                            <button class="w-10 h-10 rounded-full bg-blue-600 border-2 border-transparent hover:border-orange-500 transition-colors"></button>
+                            <button class="w-10 h-10 rounded-full bg-purple-600 border-2 border-transparent hover:border-orange-500 transition-colors"></button>
+                            <button class="w-10 h-10 rounded-full bg-white border-2 border-gray-300 hover:border-orange-500 transition-colors"></button>
+                        </div>
+                    </div>
+
+                    <!-- Storage Selection - Dynamic -->
+                    <div>
+                        <h3 class="font-semibold text-gray-900 mb-3">Bộ nhớ trong</h3>
+                        <div class="flex flex-wrap gap-3" id="storageOptions">
+                            <!-- Rendered by JS -->
+                        </div>
+                    </div>
+
+                    <!-- Quantity and Add to Cart -->
+                    <div class="flex flex-col sm:flex-row gap-4 pt-4">
+                        <div class="flex items-center border-2 border-gray-200 rounded-xl">
+                            <button onclick="adjustQuantity(-1)" class="px-4 py-3 hover:bg-gray-100 transition-colors text-gray-600">-</button>
+                            <span id="quantity" class="px-4 py-3 font-bold w-12 text-center">1</span>
+                            <button onclick="adjustQuantity(1)" class="px-4 py-3 hover:bg-gray-100 transition-colors text-gray-600">+</button>
+                        </div>
+                        <button onclick="addToCartFromDetail()" class="flex-1 bg-orange-500 hover:bg-orange-600 text-white font-bold py-3 px-8 rounded-xl transition-all transform hover:scale-105 flex items-center justify-center space-x-2 shadow-lg shadow-orange-500/30">
+                            <i data-lucide="shopping-cart" class="w-5 h-5"></i>
+                            <span>Thêm vào giỏ hàng</span>
+                        </button>
+                        <button class="p-3 border-2 border-gray-200 rounded-xl hover:border-red-500 hover:text-red-500 transition-colors">
+                            <i data-lucide="heart" class="w-6 h-6"></i>
+                        </button>
+                    </div>
+
+                    <!-- Promotions -->
+                    <div class="bg-orange-50 border border-orange-200 rounded-xl p-4 space-y-2">
+                        <div class="flex items-center space-x-2 text-orange-800 font-medium">
+                            <i data-lucide="gift" class="w-5 h-5"></i>
+                            <span>Khuyến mãi đặc biệt</span>
+                        </div>
+                        <ul class="text-sm text-gray-700 space-y-1 ml-7">
+                            <li>• Giảm thêm 500.000₫ khi thanh toán qua VNPAY</li>
+                            <li>• Tặng sạc nhanh 20W trị giá 350.000₫</li>
+                            <li>• Trả góp 0% lãi suất qua thẻ tín dụng</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Specifications Section -->
+    <section class="py-8 bg-white">
+        <div class="container mx-auto px-4">
+            <div class="max-w-4xl mx-auto">
+                <h2 class="text-2xl font-bold text-gray-900 mb-8 text-center">Thông số kỹ thuật chi tiết</h2>
+                
+                <div class="bg-gray-50 rounded-2xl overflow-hidden">
+                    <!-- Display -->
+                    <div class="p-6 border-b border-gray-200">
+                        <h3 class="text-lg font-bold text-gray-900 mb-4 flex items-center">
+                            <i data-lucide="smartphone" class="w-5 h-5 mr-2 text-orange-500"></i>
+                            Màn hình
+                        </h3>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
+                            <div class="flex justify-between py-2 border-b border-gray-100">
+                                <span class="text-gray-600">Công nghệ màn hình</span>
+                                <span id="specDisplayTech" class="font-medium text-gray-900">OLED</span>
+                            </div>
+                            <div class="flex justify-between py-2 border-b border-gray-100">
+                                <span class="text-gray-600">Độ phân giải</span>
+                                <span id="specResolution" class="font-medium text-gray-900">2556 x 1179 pixels</span>
+                            </div>
+                            <div class="flex justify-between py-2 border-b border-gray-100">
+                                <span class="text-gray-600">Kích thước màn hình</span>
+                                <span id="specScreenSize" class="font-medium text-gray-900">6.1 inches</span>
+                            </div>
+                            <div class="flex justify-between py-2 border-b border-gray-100">
+                                <span class="text-gray-600">Tần số quét</span>
+                                <span id="specRefreshRate" class="font-medium text-gray-900">120Hz</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Camera -->
+                    <div class="p-6 border-b border-gray-200">
+                        <h3 class="text-lg font-bold text-gray-900 mb-4 flex items-center">
+                            <i data-lucide="camera" class="w-5 h-5 mr-2 text-orange-500"></i>
+                            Camera
+                        </h3>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
+                            <div class="flex justify-between py-2 border-b border-gray-100">
+                                <span class="text-gray-600">Camera sau</span>
+                                <span id="specRearCamera" class="font-medium text-gray-900">48MP + 12MP + 12MP</span>
+                            </div>
+                            <div class="flex justify-between py-2 border-b border-gray-100">
+                                <span class="text-gray-600">Camera trước</span>
+                                <span id="specFrontCamera" class="font-medium text-gray-900">12MP</span>
+                            </div>
+                            <div class="flex justify-between py-2 border-b border-gray-100">
+                                <span class="text-gray-600">Quay video</span>
+                                <span id="specVideo" class="font-medium text-gray-900">4K 60fps</span>
+                            </div>
+                            <div class="flex justify-between py-2 border-b border-gray-100">
+                                <span class="text-gray-600">Tính năng</span>
+                                <span id="specCameraFeatures" class="font-medium text-gray-900">Night Mode, Portrait</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Performance -->
+                    <div class="p-6 border-b border-gray-200">
+                        <h3 class="text-lg font-bold text-gray-900 mb-4 flex items-center">
+                            <i data-lucide="cpu" class="w-5 h-5 mr-2 text-orange-500"></i>
+                            Hiệu năng & Lưu trữ
+                        </h3>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
+                            <div class="flex justify-between py-2 border-b border-gray-100">
+                                <span class="text-gray-600">Hệ điều hành</span>
+                                <span id="specOS" class="font-medium text-gray-900">iOS 17</span>
+                            </div>
+                            <div class="flex justify-between py-2 border-b border-gray-100">
+                                <span class="text-gray-600">Chip xử lý</span>
+                                <span id="specChip" class="font-medium text-gray-900">A17 Pro</span>
+                            </div>
+                            <div class="flex justify-between py-2 border-b border-gray-100">
+                                <span class="text-gray-600">RAM</span>
+                                <span id="specRAM" class="font-medium text-gray-900">8GB</span>
+                            </div>
+                            <div class="flex justify-between py-2 border-b border-gray-100">
+                                <span class="text-gray-600">Bộ nhớ trong</span>
+                                <span id="specStorage" class="font-medium text-gray-900">256GB</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Battery -->
+                    <div class="p-6 border-b border-gray-200">
+                        <h3 class="text-lg font-bold text-gray-900 mb-4 flex items-center">
+                            <i data-lucide="battery-charging" class="w-5 h-5 mr-2 text-orange-500"></i>
+                            Pin & Sạc
+                        </h3>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
+                            <div class="flex justify-between py-2 border-b border-gray-100">
+                                <span class="text-gray-600">Dung lượng pin</span>
+                                <span id="specBattery" class="font-medium text-gray-900">3274 mAh</span>
+                            </div>
+                            <div class="flex justify-between py-2 border-b border-gray-100">
+                                <span class="text-gray-600">Sạc nhanh</span>
+                                <span id="specFastCharge" class="font-medium text-gray-900">20W</span>
+                            </div>
+                            <div class="flex justify-between py-2 border-b border-gray-100">
+                                <span class="text-gray-600">Sạc không dây</span>
+                                <span id="specWireless" class="font-medium text-gray-900">15W MagSafe</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Design -->
+                    <div class="p-6">
+                        <h3 class="text-lg font-bold text-gray-900 mb-4 flex items-center">
+                            <i data-lucide="ruler" class="w-5 h-5 mr-2 text-orange-500"></i>
+                            Thiết kế & Trọng lượng
+                        </h3>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
+                            <div class="flex justify-between py-2 border-b border-gray-100">
+                                <span class="text-gray-600">Kích thước</span>
+                                <span id="specDimensions" class="font-medium text-gray-900">146.7 x 71.5 x 7.8 mm</span>
+                            </div>
+                            <div class="flex justify-between py-2 border-b border-gray-100">
+                                <span class="text-gray-600">Trọng lượng</span>
+                                <span id="specWeight" class="font-medium text-gray-900">171g</span>
+                            </div>
+                            <div class="flex justify-between py-2 border-b border-gray-100">
+                                <span class="text-gray-600">Chất liệu</span>
+                                <span id="specMaterial" class="font-medium text-gray-900">Titanium</span>
+                            </div>
+                            <div class="flex justify-between py-2 border-b border-gray-100">
+                                <span class="text-gray-600">Kháng nước</span>
+                                <span id="specWaterResist" class="font-medium text-gray-900">IP68</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Related Products -->
+    <section class="py-12 bg-gray-50">
+        <div class="container mx-auto px-4">
+            <h2 class="text-2xl font-bold text-gray-900 mb-8">Sản phẩm liên quan</h2>
+            <div id="relatedProducts" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                <!-- Related products rendered by JS -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-white py-12">
+        <div class="container mx-auto px-4">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
+                <div>
+                    <div class="flex items-center space-x-2 mb-4">
+                        <i data-lucide="flame" class="w-8 h-8 text-orange-500"></i>
+                        <span class="text-xl font-bold">PHOENIX<span class="text-orange-500">ELECTRONICS</span></span>
+                    </div>
+                    <p class="text-gray-400 text-sm">Chuyên cung cấp điện thoại chính hãng, giá tốt với dịch vụ bảo hành uy tín.</p>
+                </div>
+                <div>
+                    <h4 class="font-bold text-lg mb-4">Sản phẩm</h4>
+                    <ul class="space-y-2 text-gray-400">
+                        <li><a href="index.html#products" class="hover:text-orange-500">iPhone</a></li>
+                        <li><a href="index.html#products" class="hover:text-orange-500">Samsung</a></li>
+                        <li><a href="index.html#products" class="hover:text-orange-500">Xiaomi</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-bold text-lg mb-4">Hỗ trợ</h4>
+                    <ul class="space-y-2 text-gray-400">
+                        <li><a href="#" class="hover:text-orange-500">Bảo hành</a></li>
+                        <li><a href="#" class="hover:text-orange-500">Đổi trả</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-bold text-lg mb-4">Liên hệ</h4>
+                    <p class="text-gray-400 text-sm">Hotline: 1900 1234</p>
+                </div>
+            </div>
+            <div class="border-t border-gray-800 pt-8 text-center text-gray-500 text-sm">
+                © 2024 PHOENIX ELECTRONICS. All rights reserved.
+            </div>
+        </div>
+    </footer>
+
+    <!-- Cart Sidebar -->
+    <div id="cartSidebar" class="fixed inset-0 z-50 hidden">
+        <div class="absolute inset-0 bg-black/50 backdrop-blur-sm" onclick="toggleCart()"></div>
+        <div class="absolute right-0 top-0 h-full w-full max-w-md bg-white shadow-2xl transform transition-transform duration-300 translate-x-full" id="cartContent">
+            <div class="flex flex-col h-full">
+                <div class="flex items-center justify-between p-6 border-b">
+                    <h2 class="text-2xl font-bold text-gray-900">Giỏ hàng</h2>
+                    <button onclick="toggleCart()" class="p-2 hover:bg-gray-100 rounded-full transition-colors">
+                        <i data-lucide="x" class="w-6 h-6"></i>
+                    </button>
+                </div>
+
+                <div id="cartItems" class="flex-1 overflow-y-auto p-6 space-y-4">
+                    <div class="text-center text-gray-500 mt-12">
+                        <i data-lucide="shopping-bag" class="w-16 h-16 mx-auto mb-4 text-gray-300"></i>
+                        <p>Giỏ hàng của bạn đang trống</p>
+                    </div>
+                </div>
+
+                <div class="border-t p-6 bg-gray-50">
+                    <div class="flex justify-between mb-4">
+                        <span class="text-gray-600">Tạm tính</span>
+                        <span id="cartSubtotal" class="font-bold text-xl">0₫</span>
+                    </div>
+                    <button onclick="checkout()" class="w-full bg-orange-500 hover:bg-orange-600 text-white font-bold py-4 rounded-full transition-colors">
+                        Thanh toán
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast -->
+    <div id="toast" class="fixed bottom-4 right-4 bg-gray-900 text-white px-6 py-3 rounded-lg shadow-lg transform translate-y-20 opacity-0 transition-all duration-300 z-50 flex items-center space-x-3">
+        <i data-lucide="check-circle" class="w-5 h-5 text-green-400"></i>
+        <span id="toastMessage">Thông báo</span>
+    </div>
+
+    <script src="script.js"></script>
+    <script>
+        // Product detail specific data - Cellphones Style Detailed Specs
+        const productSpecs = {
+            1: { // iPhone 17 Pro Max
+                displayTech: "Super Retina XDR OLED ProMotion",
+                resolution: "2868 x 1320 pixels (466 ppi)",
+                screenSize: "6.9 inch",
+                refreshRate: "120Hz ProMotion (1-120Hz)",
+                rearCamera: "Chính 48MP + Siêu rộng 48MP + Tele 48MP (5x)",
+                frontCamera: "24MP TrueDepth với autofocus",
+                video: "4K ProRes 120fps, Spatial Video 3D",
+                cameraFeatures: "Night Mode, ProRAW, Log Video, Camera Control button",
+                os: "iOS 19",
+                chip: "Apple A19 Pro (3nm TSMC)",
+                ram: "12GB",
+                storage: "256GB / 512GB / 1TB / 2TB",
+                battery: "4852 mAh",
+                fastCharge: "Sạc nhanh 45W",
+                wireless: "25W MagSafe, 15W Qi2",
+                dimensions: "163.9 x 77.6 x 8.25 mm",
+                weight: "227g",
+                material: "Titanium Grade 5 + Ceramic Shield 2",
+                waterResist: "IP68 (6m trong 30 phút)"
+            },
+            2: { // iPhone 17 Pro
+                displayTech: "Super Retina XDR OLED ProMotion",
+                resolution: "2622 x 1206 pixels (460 ppi)",
+                screenSize: "6.3 inch",
+                refreshRate: "120Hz ProMotion (1-120Hz)",
+                rearCamera: "Chính 48MP + Siêu rộng 48MP + Tele 48MP (5x)",
+                frontCamera: "24MP TrueDepth với autofocus",
+                video: "4K ProRes 120fps, Spatial Video 3D",
+                cameraFeatures: "Night Mode, ProRAW, Log Video, Camera Control button",
+                os: "iOS 19",
+                chip: "Apple A19 Pro (3nm TSMC)",
+                ram: "12GB",
+                storage: "128GB / 256GB / 512GB / 1TB",
+                battery: "3682 mAh",
+                fastCharge: "Sạc nhanh 45W",
+                wireless: "25W MagSafe, 15W Qi2",
+                dimensions: "149.9 x 71.8 x 8.25 mm",
+                weight: "199g",
+                material: "Titanium Grade 5 + Ceramic Shield 2",
+                waterResist: "IP68 (6m trong 30 phút)"
+            },
+            3: { // iPhone 17
+                displayTech: "Super Retina XDR OLED",
+                resolution: "2622 x 1206 pixels (460 ppi)",
+                screenSize: "6.3 inch",
+                refreshRate: "60Hz",
+                rearCamera: "Chính 48MP + Siêu rộng 48MP",
+                frontCamera: "24MP TrueDepth",
+                video: "4K Dolby Vision 60fps",
+                cameraFeatures: "Night Mode, Portrait, Action Mode, Camera Control button",
+                os: "iOS 19",
+                chip: "Apple A19 (3nm TSMC)",
+                ram: "8GB",
+                storage: "128GB / 256GB / 512GB",
+                battery: "3650 mAh",
+                fastCharge: "Sạc nhanh 35W",
+                wireless: "25W MagSafe, 15W Qi2",
+                dimensions: "149.9 x 71.8 x 7.65 mm",
+                weight: "173g",
+                material: "Nhôm + Kính Ceramic Shield 2",
+                waterResist: "IP68"
+            },
+            4: { // iPhone 16 Pro Max
+                displayTech: "Super Retina XDR OLED ProMotion",
+                resolution: "2868 x 1320 pixels (460 ppi)",
+                screenSize: "6.9 inch",
+                refreshRate: "120Hz ProMotion (1-120Hz)",
+                rearCamera: "Chính 48MP Fusion + Siêu rộng 48MP + Tele 12MP (5x)",
+                frontCamera: "12MP TrueDepth",
+                video: "4K Dolby Vision 120fps, Spatial Video",
+                cameraFeatures: "Night Mode, ProRAW, Log Video, Camera Control button, Visual Intelligence",
+                os: "iOS 18",
+                chip: "Apple A18 Pro (3nm)",
+                ram: "8GB",
+                storage: "256GB / 512GB / 1TB",
+                battery: "4685 mAh",
+                fastCharge: "Sạc nhanh 30W",
+                wireless: "25W MagSafe, 15W Qi2",
+                dimensions: "163.0 x 77.6 x 8.25 mm",
+                weight: "227g",
+                material: "Titanium Grade 5 + Ceramic Shield 2",
+                waterResist: "IP68 (6m trong 30 phút)"
+            },
+            5: { // iPhone 16 Pro
+                displayTech: "Super Retina XDR OLED ProMotion",
+                resolution: "2622 x 1206 pixels (460 ppi)",
+                screenSize: "6.3 inch",
+                refreshRate: "120Hz ProMotion (1-120Hz)",
+                rearCamera: "Chính 48MP Fusion + Siêu rộng 48MP + Tele 12MP (5x)",
+                frontCamera: "12MP TrueDepth",
+                video: "4K Dolby Vision 120fps, Spatial Video",
+                cameraFeatures: "Night Mode, ProRAW, Log Video, Camera Control button, Visual Intelligence",
+                os: "iOS 18",
+                chip: "Apple A18 Pro (3nm)",
+                ram: "8GB",
+                storage: "128GB / 256GB / 512GB / 1TB",
+                battery: "3582 mAh",
+                fastCharge: "Sạc nhanh 30W",
+                wireless: "25W MagSafe, 15W Qi2",
+                dimensions: "149.6 x 71.5 x 8.25 mm",
+                weight: "199g",
+                material: "Titanium Grade 5 + Ceramic Shield 2",
+                waterResist: "IP68 (6m trong 30 phút)"
+            },
+            6: { // iPhone 16 Plus
+                displayTech: "Super Retina XDR OLED",
+                resolution: "2796 x 1290 pixels (460 ppi)",
+                screenSize: "6.7 inch",
+                refreshRate: "60Hz",
+                rearCamera: "Chính 48MP Fusion + Siêu rộng 12MP",
+                frontCamera: "12MP TrueDepth",
+                video: "4K Dolby Vision 60fps, Action Mode",
+                cameraFeatures: "Night Mode, Portrait, Camera Control button, Visual Intelligence",
+                os: "iOS 18",
+                chip: "Apple A18 (3nm)",
+                ram: "8GB",
+                storage: "128GB / 256GB / 512GB",
+                battery: "4674 mAh",
+                fastCharge: "Sạc nhanh 30W",
+                wireless: "25W MagSafe, 15W Qi2",
+                dimensions: "160.9 x 77.8 x 7.80 mm",
+                weight: "199g",
+                material: "Nhôm + Kính Ceramic Shield 2",
+                waterResist: "IP68"
+            },
+            7: { // iPhone 16
+                displayTech: "Super Retina XDR OLED",
+                resolution: "2556 x 1179 pixels (461 ppi)",
+                screenSize: "6.1 inch",
+                refreshRate: "60Hz",
+                rearCamera: "Chính 48MP Fusion + Siêu rộng 12MP",
+                frontCamera: "12MP TrueDepth",
+                video: "4K Dolby Vision 60fps, Action Mode",
+                cameraFeatures: "Night Mode, Portrait, Camera Control button, Visual Intelligence",
+                os: "iOS 18",
+                chip: "Apple A18 (3nm)",
+                ram: "8GB",
+                storage: "128GB / 256GB / 512GB",
+                battery: "3561 mAh",
+                fastCharge: "Sạc nhanh 30W",
+                wireless: "25W MagSafe, 15W Qi2",
+                dimensions: "147.6 x 71.6 x 7.80 mm",
+                weight: "170g",
+                material: "Nhôm + Kính Ceramic Shield 2",
+                waterResist: "IP68"
+            },
+            8: { // iPhone 15 Pro Max
+                displayTech: "Super Retina XDR OLED",
+                resolution: "2796 x 1290 pixels (460 ppi)",
+                screenSize: "6.7 inch",
+                refreshRate: "120Hz ProMotion",
+                rearCamera: "Chính 48MP + Siêu rộng 12MP + Tele 12MP",
+                frontCamera: "12MP TrueDepth",
+                video: "4K ProRes 60fps, Action Mode",
+                cameraFeatures: "Night Mode, Portrait, ProRAW, Spatial Video",
+                os: "iOS 17",
+                chip: "Apple A17 Pro (3nm)",
+                ram: "8GB",
+                storage: "256GB / 512GB / 1TB",
+                battery: "4422 mAh",
+                fastCharge: "Sạc nhanh 27W",
+                wireless: "15W MagSafe, 7.5W Qi",
+                dimensions: "159.9 x 76.7 x 8.25 mm",
+                weight: "221g",
+                material: "Titanium Grade 5",
+                waterResist: "IP68 (6m trong 30 phút)"
+            },
+            9: { // iPhone 15 Pro
+                displayTech: "Super Retina XDR OLED",
+                resolution: "2556 x 1179 pixels (461 ppi)",
+                screenSize: "6.1 inch",
+                refreshRate: "120Hz ProMotion",
+                rearCamera: "Chính 48MP + Siêu rộng 12MP + Tele 12MP",
+                frontCamera: "12MP TrueDepth",
+                video: "4K ProRes 60fps, Action Mode",
+                cameraFeatures: "Night Mode, Portrait, ProRAW, Spatial Video",
+                os: "iOS 17",
+                chip: "Apple A17 Pro (3nm)",
+                ram: "8GB",
+                storage: "128GB / 256GB / 512GB / 1TB",
+                battery: "3274 mAh",
+                fastCharge: "Sạc nhanh 27W",
+                wireless: "15W MagSafe, 7.5W Qi",
+                dimensions: "146.6 x 70.6 x 8.25 mm",
+                weight: "187g",
+                material: "Titanium Grade 5",
+                waterResist: "IP68 (6m trong 30 phút)"
+            },
+            10: { // iPhone 15
+                displayTech: "Super Retina XDR OLED",
+                resolution: "2556 x 1179 pixels",
+                screenSize: "6.1 inch",
+                refreshRate: "60Hz",
+                rearCamera: "Chính 48MP + Siêu rộng 12MP",
+                frontCamera: "12MP TrueDepth",
+                video: "4K 60fps, Action Mode",
+                cameraFeatures: "Night Mode, Portrait, Dynamic Island",
+                os: "iOS 17",
+                chip: "Apple A16 Bionic",
+                ram: "6GB",
+                storage: "128GB / 256GB / 512GB",
+                battery: "3349 mAh",
+                fastCharge: "Sạc nhanh 20W",
+                wireless: "15W MagSafe, 7.5W Qi",
+                dimensions: "147.6 x 71.6 x 7.8 mm",
+                weight: "171g",
+                material: "Nhôm + Kính",
+                waterResist: "IP68"
+            },
+            11: { // Samsung S24 Ultra
+                displayTech: "Dynamic AMOLED 2X",
+                resolution: "3120 x 1440 pixels (QHD+)",
+                screenSize: "6.8 inch",
+                refreshRate: "120Hz Adaptive (1-120Hz)",
+                rearCamera: "200MP + 50MP + 12MP + 10MP (4 camera)",
+                frontCamera: "12MP",
+                video: "8K 30fps, 4K 120fps",
+                cameraFeatures: "AI Zoom 100x, Nightography, ProVisual Engine",
+                os: "Android 14 (One UI 6.1)",
+                chip: "Snapdragon 8 Gen 3 for Galaxy (4nm)",
+                ram: "12GB",
+                storage: "256GB / 512GB / 1TB",
+                battery: "5000 mAh",
+                fastCharge: "Sạc nhanh 45W",
+                wireless: "15W Qi, 4.5W Wireless PowerShare",
+                dimensions: "162.3 x 79.0 x 8.6 mm",
+                weight: "233g",
+                material: "Khung Titanium + Kính Gorilla Armor",
+                waterResist: "IP68"
+            },
+            12: { // Samsung S24+
+                displayTech: "Dynamic AMOLED 2X",
+                resolution: "3120 x 1440 pixels",
+                screenSize: "6.7 inch",
+                refreshRate: "120Hz Adaptive",
+                rearCamera: "50MP + 12MP + 10MP",
+                frontCamera: "12MP",
+                video: "8K 30fps, 4K 60fps",
+                cameraFeatures: "AI Zoom 30x, Nightography",
+                os: "Android 14 (One UI 6.1)",
+                chip: "Snapdragon 8 Gen 3 for Galaxy",
+                ram: "12GB",
+                storage: "256GB / 512GB",
+                battery: "4900 mAh",
+                fastCharge: "Sạc nhanh 45W",
+                wireless: "15W Qi",
+                dimensions: "158.5 x 75.9 x 7.7 mm",
+                weight: "196g",
+                material: "Nhôm + Kính Gorilla Victus 2",
+                waterResist: "IP68"
+            },
+            13: { // Galaxy Z Fold5
+                displayTech: "Dynamic AMOLED 2X (màn chính) + Super AMOLED (màn ngoài)",
+                resolution: "2176 x 1812 (màn chính) + 2316 x 904 (màn ngoài)",
+                screenSize: "7.6 inch (màn chính) + 6.2 inch (màn ngoài)",
+                refreshRate: "120Hz Adaptive",
+                rearCamera: "50MP + 12MP + 10MP",
+                frontCamera: "10MP (màn ngoài) + 4MP (UDC màn trong)",
+                video: "8K 30fps, 4K 60fps",
+                cameraFeatures: "AI Zoom 30x, Nightography",
+                os: "Android 13 (One UI 5.1.1)",
+                chip: "Snapdragon 8 Gen 2 for Galaxy",
+                ram: "12GB",
+                storage: "256GB / 512GB / 1TB",
+                battery: "4400 mAh",
+                fastCharge: "Sạc nhanh 25W",
+                wireless: "15W Qi, 4.5W Wireless PowerShare",
+                dimensions: "Mở: 154.9 x 129.9 x 6.1 mm | Gập: 154.9 x 67.1 x 13.4 mm",
+                weight: "253g",
+                material: "Nhôm + Kính Gorilla Victus 2",
+                waterResist: "IPX8"
+            },
+            14: { // Xiaomi 14 Ultra
+                displayTech: "AMOLED LTPO 2K",
+                resolution: "3200 x 1440 pixels (522 ppi)",
+                screenSize: "6.73 inch",
+                refreshRate: "120Hz Adaptive (1-120Hz)",
+                rearCamera: "4 x 50MP (Leica Summilux)",
+                frontCamera: "32MP",
+                video: "8K 24fps, 4K 60fps",
+                cameraFeatures: "Leica 1-inch sensor, OIS toàn bộ camera",
+                os: "Xiaomi HyperOS (Android 14)",
+                chip: "Snapdragon 8 Gen 3",
+                ram: "16GB LPDDR5X",
+                storage: "512GB / 1TB UFS 4.0",
+                battery: "5000 mAh",
+                fastCharge: "Sạc siêu nhanh 90W + 80W Wireless",
+                wireless: "80W Wireless",
+                dimensions: "161.4 x 75.3 x 9.2 mm",
+                weight: "219.8g",
+                material: "Titanium / Gốm",
+                waterResist: "IP68"
+            },
+            15: { // Xiaomi 14
+                displayTech: "OLED 1.5K CrystalRes",
+                resolution: "2670 x 1200 pixels (460 ppi)",
+                screenSize: "6.36 inch",
+                refreshRate: "120Hz LTPO",
+                rearCamera: "50MP (chính) + 50MP (góc rộng) + 50MP (tele)",
+                frontCamera: "32MP",
+                video: "8K 24fps, 4K 60fps",
+                cameraFeatures: "Leica Optics, OIS",
+                os: "Xiaomi HyperOS (Android 14)",
+                chip: "Snapdragon 8 Gen 3",
+                ram: "12GB LPDDR5X",
+                storage: "256GB / 512GB / 1TB UFS 4.0",
+                battery: "4610 mAh",
+                fastCharge: "Sạc siêu nhanh 90W + 50W Wireless",
+                wireless: "50W Wireless",
+                dimensions: "152.8 x 71.5 x 8.20 mm",
+                weight: "188g",
+                material: "Nhôm + Kính",
+                waterResist: "IP68"
+            },
+            16: { // Redmi Note 13 Pro+
+                displayTech: "AMOLED 1.5K",
+                resolution: "2712 x 1220 pixels (446 ppi)",
+                screenSize: "6.67 inch",
+                refreshRate: "120Hz",
+                rearCamera: "200MP (chính OIS) + 8MP + 2MP",
+                frontCamera: "16MP",
+                video: "4K 30fps, 1080p 60fps",
+                cameraFeatures: "OIS, Night Mode",
+                os: "Xiaomi HyperOS (Android 13)",
+                chip: "MediaTek Dimensity 7200-Ultra",
+                ram: "8GB / 12GB",
+                storage: "256GB / 512GB",
+                battery: "5000 mAh",
+                fastCharge: "Sạc siêu nhanh 120W",
+                wireless: "Không hỗ trợ",
+                dimensions: "161.4 x 74.2 x 8.9 mm",
+                weight: "204.5g",
+                material: "Nhựa + Kính",
+                waterResist: "IP54"
+            },
+            17: { // OPPO Find X7 Ultra
+                displayTech: "AMOLED LTPO 2K",
+                resolution: "3168 x 1440 pixels (510 ppi)",
+                screenSize: "6.82 inch",
+                refreshRate: "1-120Hz Adaptive",
+                rearCamera: "4 x 50MP (Hasselblad)",
+                frontCamera: "32MP",
+                video: "4K 60fps, Dolby Vision",
+                cameraFeatures: "Hasselblad Camera System, Zoom 6x quang học",
+                os: "ColorOS 14 (Android 14)",
+                chip: "Snapdragon 8 Gen 3",
+                ram: "12GB / 16GB LPDDR5X",
+                storage: "256GB / 512GB UFS 4.0",
+                battery: "5000 mAh",
+                fastCharge: "Sạc siêu nhanh 100W + 50W Wireless",
+                wireless: "50W AirVOOC",
+                dimensions: "164.3 x 76.2 x 9.5 mm",
+                weight: "221g",
+                material: "Thép không gỉ + Da / Kính",
+                waterResist: "IP68"
+            },
+            18: { // OPPO Reno11 Pro
+                displayTech: "AMOLED FHD+",
+                resolution: "2412 x 1080 pixels (394 ppi)",
+                screenSize: "6.7 inch",
+                refreshRate: "120Hz",
+                rearCamera: "50MP (chính OIS) + 32MP (tele) + 8MP",
+                frontCamera: "32MP",
+                video: "4K 30fps, 1080p 60fps",
+                cameraFeatures: "Portrait Mode, OIS",
+                os: "ColorOS 14 (Android 14)",
+                chip: "MediaTek Dimensity 8200",
+                ram: "12GB",
+                storage: "256GB / 512GB",
+                battery: "4600 mAh",
+                fastCharge: "Sạc siêu nhanh 80W",
+                wireless: "Không hỗ trợ",
+                dimensions: "163.0 x 74.2 x 8.26 mm",
+                weight: "190g",
+                material: "Nhựa + Kính",
+                waterResist: "Không có"
+            },
+            19: { // Google Pixel 8 Pro
+                displayTech: "LTPO OLED Super Actua",
+                resolution: "2992 x 1344 pixels (489 ppi)",
+                screenSize: "6.7 inch",
+                refreshRate: "1-120Hz",
+                rearCamera: "50MP + 48MP + 48MP",
+                frontCamera: "10.5MP",
+                video: "4K 60fps, 10-bit HDR",
+                cameraFeatures: "Magic Editor, Best Take, Zoom 30x",
+                os: "Android 14",
+                chip: "Google Tensor G3 (4nm)",
+                ram: "12GB LPDDR5X",
+                storage: "128GB / 256GB / 512GB / 1TB",
+                battery: "5050 mAh",
+                fastCharge: "Sạc nhanh 30W + 23W Wireless",
+                wireless: "Qi 23W",
+                dimensions: "162.6 x 76.5 x 8.8 mm",
+                weight: "213g",
+                material: "Nhôm + Kính Gorilla Glass Victus 2",
+                waterResist: "IP68"
+            }
+        };
+
+        let currentProduct = null;
+        let currentQuantity = 1;
+
+        function loadProductDetail() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const productId = parseInt(urlParams.get('id')) || 1;
+            
+            currentProduct = products.find(p => p.id === productId) || products[0];
+            const specs = productSpecs[productId] || productSpecs[1];
+            
+            // Update UI
+            document.getElementById('productName').textContent = currentProduct.name;
+            document.getElementById('breadcrumbName').textContent = currentProduct.name;
+            document.getElementById('brandBadge').textContent = currentProduct.brand;
+            document.getElementById('mainImage').src = currentProduct.image;
+            document.getElementById('thumb1').src = currentProduct.image;
+            document.getElementById('productPrice').textContent = formatPrice(currentProduct.price);
+            
+            if (currentProduct.originalPrice > currentProduct.price) {
+                document.getElementById('originalPrice').textContent = formatPrice(currentProduct.originalPrice);
+                document.getElementById('originalPrice').classList.remove('hidden');
+                const discount = Math.round((1 - currentProduct.price/currentProduct.originalPrice) * 100);
+                document.getElementById('discountBadge').textContent = `-${discount}%`;
+                document.getElementById('discountBadge').classList.remove('hidden');
+            }
+            
+            // Short specs tags
+            const shortSpecsDiv = document.getElementById('shortSpecs');
+            shortSpecsDiv.innerHTML = currentProduct.specs.map(spec => 
+                `<span class="px-4 py-2 bg-gray-100 rounded-lg text-sm font-medium text-gray-700">${spec}</span>`
+            ).join('');
+            
+            // Fill detailed specs
+            document.getElementById('specDisplayTech').textContent = specs.displayTech;
+            document.getElementById('specResolution').textContent = specs.resolution;
+            document.getElementById('specScreenSize').textContent = specs.screenSize;
+            document.getElementById('specRefreshRate').textContent = specs.refreshRate;
+            document.getElementById('specRearCamera').textContent = specs.rearCamera;
+            document.getElementById('specFrontCamera').textContent = specs.frontCamera;
+            document.getElementById('specVideo').textContent = specs.video;
+            document.getElementById('specCameraFeatures').textContent = specs.cameraFeatures;
+            document.getElementById('specOS').textContent = specs.os;
+            document.getElementById('specChip').textContent = specs.chip;
+            document.getElementById('specRAM').textContent = specs.ram;
+            document.getElementById('specStorage').textContent = specs.storage;
+            document.getElementById('specBattery').textContent = specs.battery;
+            document.getElementById('specFastCharge').textContent = specs.fastCharge;
+            document.getElementById('specWireless').textContent = specs.wireless;
+            document.getElementById('specDimensions').textContent = specs.dimensions;
+            document.getElementById('specWeight').textContent = specs.weight;
+            document.getElementById('specMaterial').textContent = specs.material;
+            document.getElementById('specWaterResist').textContent = specs.waterResist;
+            
+            // Load related products (same brand)
+            const related = products.filter(p => p.brand === currentProduct.brand && p.id !== currentProduct.id).slice(0, 4);
+            const relatedDiv = document.getElementById('relatedProducts');
+            relatedDiv.innerHTML = related.map(p => `
+                <a href="product-detail.html?id=${p.id}" class="bg-white rounded-xl overflow-hidden shadow-md hover:shadow-xl transition-all group">
+                    <div class="aspect-square overflow-hidden">
+                        <img src="${p.image}" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300">
+                    </div>
+                    <div class="p-4">
+                        <h3 class="font-bold text-gray-900 mb-1 line-clamp-1">${p.name}</h3>
+                        <p class="text-orange-600 font-bold">${formatPrice(p.price)}</p>
+                    </div>
+                </a>
+            `).join('');
+            
+            lucide.createIcons();
+        }
+
+        function adjustQuantity(change) {
+            currentQuantity += change;
+            if (currentQuantity < 1) currentQuantity = 1;
+            if (currentQuantity > 10) currentQuantity = 10;
+            document.getElementById('quantity').textContent = currentQuantity;
+        }
+
+        function addToCartFromDetail() {
+            if (!currentProduct) return;
+            
+            // Add multiple quantity
+            for (let i = 0; i < currentQuantity; i++) {
+                const existingItem = cart.find(item => item.id === currentProduct.id);
+                if (existingItem) {
+                    existingItem.quantity += 1;
+                } else {
+                    cart.push({...currentProduct, quantity: 1});
+                }
+            }
+            
+            updateCartUI();
+            showToast(`Đã thêm ${currentQuantity} ${currentProduct.name} vào giỏ hàng`);
+            currentQuantity = 1;
+            document.getElementById('quantity').textContent = '1';
+        }
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            loadProductDetail();
+            lucide.createIcons();
+        });
+    </script>
+<script src="https://deepsite.hf.co/deepsite-badge.js"></script>
+</body>
+</html>
