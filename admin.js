@@ -1,5 +1,8 @@
 // Admin Dashboard Functionality
-const adminProducts = [
+if (!localStorage.getItem("products")) {
+    localStorage.setItem("products", JSON.stringify(adminProducts));
+}
+let adminProducts = JSON.parse(localStorage.getItem("products")) || [
     {
         id: 1,
         name: "iPhone 17 Pro Max",
