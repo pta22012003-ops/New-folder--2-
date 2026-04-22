@@ -1,5 +1,8 @@
 // Product Data - Cellphones Style Premium Images & Real Specs
-const products = [
+f (!localStorage.getItem("products")) {
+    localStorage.setItem("products", JSON.stringify(products));
+}
+let products = JSON.parse(localStorage.getItem("products")) || [
     {
         id: 1,
         name: "iPhone 17 Pro Max",
