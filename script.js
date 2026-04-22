@@ -484,8 +484,12 @@ function viewProductDetail(productId) {
 
 // Add to Cart
 function addToCart(productId) {
-    const product = products.find(p => p.id === productId) || 
-                   { id: 997, name: "Xiaomi 14 Ultra", price: 17990000, image: "http://static.photos/technology/640x360/103", specs: ["512GB"] };
+    const product = products.find(p => p.id === Number(productId));
+
+if (!product) {
+    console.error("Không tìm thấy sản phẩm!");
+    return;
+}
     
     const existingItem = cart.find(item => item.id === productId);
     
